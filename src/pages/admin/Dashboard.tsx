@@ -1,36 +1,16 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
+import type { Product } from "../../types/product";
+import { getAllProducts } from "../../services/api/products";
 
-type Product = {
-    id: number,
-    name: string,
-    brand: string,
-    price: number,
-    stock: number,
-    unit: string,
-    created_at: string
-}
+
 const Dashboard = () => {
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState<boolean>(true);
 
     const fetcthProducts = async () => {
-        try {
-            const { data: products, error } = await supabase
-                .from('products')
-                .select('*')
-
-            if (error) {
-                console.error("Error fetching products")
-            } else {
-                setProducts(products);
-            }
-            setLoading(false)
-        } catch (error) {
-            console.error(error)
-        } finally {
-            setLoading(false)
-        }
+        const result = await getAllProducts();
+        setProducts(result)
+        setLoading(false)
     }
 
     useEffect(() => {

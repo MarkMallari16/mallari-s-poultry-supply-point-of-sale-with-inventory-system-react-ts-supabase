@@ -1,22 +1,22 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
+import { supabase } from './lib/supabaseClient';
+import { BrowserRouter, Route, Routes } from 'react-router';
+import Login from './pages/Login';
+import Dashboard from './pages/admin/Dashboard';
+
 
 function App() {
-  const [count, setCount] = useState(0)
-  const decrementCount = () => {
-    setCount(prev => prev <= 0 ? 0 : prev - 1);
-  }
-  const incrementCount = () => {
-    setCount(prev => prev + 1);
-  }
+
   return (
     <>
-      <p>{count}</p>
-      <button className='btn btn-primary' onClick={incrementCount}>Increment</button>
-      <button className='btn btn-error' onClick={decrementCount}>Decrement</button>
+      <BrowserRouter>
+        <Routes>
 
+          <Route path='/login' element={<Login />} />
+          <Route path='/' element={<Dashboard />} />
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }

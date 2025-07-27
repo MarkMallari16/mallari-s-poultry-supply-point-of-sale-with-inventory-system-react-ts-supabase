@@ -15,8 +15,10 @@ export const AuthContext = createContext<AuthContextProps | undefined>(undefined
 
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+    //states
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+
     //navigate to specific route
     const navigate = useNavigate();
 
@@ -40,9 +42,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const logout = async () => {
+        //logout user
         await supabase.auth.signOut();
+
         setUser(null);
-        navigate("/")
+        navigate("/login")
     }
 
     //this will load the session

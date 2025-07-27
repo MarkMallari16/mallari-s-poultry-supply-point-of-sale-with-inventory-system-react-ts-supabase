@@ -13,13 +13,14 @@ const Dashboard = () => {
         setLoading(false)
     }
 
+    //run once it rendered
     useEffect(() => {
         fetcthProducts();
     }, [])
 
     return (
         <div>
-            <h1 className="text-xl font-bold mb-4">Product Inventory</h1>
+            <h1 className="text-xl font-bold pt-4 mb-4">Product Inventory</h1>
             {loading ? (
                 <p>Loading...</p>
             ) : (

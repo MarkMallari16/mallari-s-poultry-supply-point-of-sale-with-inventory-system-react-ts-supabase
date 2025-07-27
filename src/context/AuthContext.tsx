@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const logout = async () => {
         await supabase.auth.signOut();
         setUser(null);
-        navigate("/login")
+        navigate("/")
     }
 
     //this will load the session
@@ -68,15 +68,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     id,
                     email,
                     full_name: userData.name ?? "",
-                    role: userData.role ?? "cashier"
+                    role: userData.role
                 })
             }
         }
+
+
         setLoading(false);
     }
 
     useEffect(() => {
         loadSession();
+        const { data: listener } = supabase.auth.onAuthStateChange(() => {
+            loadSession();
+        })
+        return () => listener?.subscription.unsubscribe();
     }, [])
 
     return (

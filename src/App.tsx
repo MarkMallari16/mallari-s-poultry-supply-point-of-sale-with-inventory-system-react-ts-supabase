@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/admin/Dashboard';
 import { AuthProvider } from './context/AuthContext';
 import DashboardCashier from './pages/cashier/DashboardCashier';
+import ProtectedRoutes from './components/ProtectedRoutes';
 
 
 function App() {
@@ -13,10 +14,16 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path='/login' element={<Login />} />
-
-            <Route path='/admin' element={<Dashboard />} />
-            <Route path='/cashier' element={<DashboardCashier />} />
+            <Route path='/' element={<Login />} />
+            <Route path='/admin' element={
+              <ProtectedRoutes allowedRole='admin'>
+                <Dashboard />
+              </ProtectedRoutes>} />
+            <Route path='/cashier' element={
+              <ProtectedRoutes allowedRole='cashier'>
+                <DashboardCashier />
+              </ProtectedRoutes>
+            } />
           </Routes>
         </AuthProvider>
 

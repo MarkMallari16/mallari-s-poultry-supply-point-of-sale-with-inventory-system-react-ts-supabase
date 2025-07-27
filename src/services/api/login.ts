@@ -13,7 +13,7 @@ export const loginUser = async (email: string, password: string): Promise<User |
     }
     //get the user data once authenticated.
     const authUser = data.user;
-
+    console.log("Auth", authUser)
     const { data: userData, error: userError } = await supabase
         .from("users")
         .select("full_name,role")
@@ -21,9 +21,10 @@ export const loginUser = async (email: string, password: string): Promise<User |
         .single()
 
     if (userError || !userData) {
-        console.error("Error fetching user data: ", userError.message);
+        console.error("Error fetching user data: ", userError?.message);
         return null;
     }
+
     return {
         id: authUser.id,
         email: authUser.email ?? "",

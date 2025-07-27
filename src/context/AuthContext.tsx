@@ -29,12 +29,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setUser(result)
             if (result.role === "admin") {
                 console.log(result)
-                navigate("/admin")
+                navigate("/admin/dashboard")
             } else if (result.role === "cashier") {
                 console.log(result)
-
-                navigate("/cashier")
-
+                navigate("/cashier/dashboard")
             }
         };
 
@@ -67,12 +65,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 setUser({
                     id,
                     email,
-                    full_name: userData.name ?? "",
+                    full_name: userData.full_name ?? "",
                     role: userData.role
                 })
             }
         }
-
 
         setLoading(false);
     }
@@ -83,6 +80,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             loadSession();
         })
         return () => listener?.subscription.unsubscribe();
+
     }, [])
 
     return (

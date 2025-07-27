@@ -3,7 +3,7 @@ import { useAuth } from "../hooks/useAuth";
 
 interface ProtectedRouteProps {
     children: JSX.Element;
-    allowedRole?: "admin" | "cashier";
+    allowedRole: "admin" | "cashier";
 }
 
 const ProtectedRoutes = ({ children, allowedRole }: ProtectedRouteProps) => {
@@ -14,11 +14,11 @@ const ProtectedRoutes = ({ children, allowedRole }: ProtectedRouteProps) => {
     }
 
     if (!user) {
-        return <Navigate to="/" />
+        return <Navigate to="/login" />
     }
 
     if (allowedRole && user.role !== allowedRole) {
-        return <Navigate to="/" />
+        return <Navigate to={`/${user.role}`} replace />
     }
     return children;
 }

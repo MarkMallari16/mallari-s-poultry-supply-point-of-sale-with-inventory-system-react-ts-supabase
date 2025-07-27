@@ -2,10 +2,10 @@ import { useAuth } from "../../hooks/useAuth"
 
 const DashboardCashier = () => {
     const { logout } = useAuth();
+
     return (
         <div>
-            DashboardCashier
-            <button className="btn btn-error" onClick={logout}>Logout</button>
+            <h1 className="text-4xl">Hello I'm cashier</h1>
         </div>
     )
 }

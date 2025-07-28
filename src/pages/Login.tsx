@@ -21,7 +21,7 @@ const Login = () => {
 
     return (
         <div className="bg-emerald-50 min-h-screen grid place-items-center">
-            <div className="bg-white shadow-xl px-10 py-20 rounded-md w-full lg:w-1/4  ring-1 ring-inset ring-gray-200">
+            <div className="bg-white shadow-xl px-10 py-14 rounded-md w-full lg:w-1/4  ring-1 ring-inset ring-gray-200">
 
                 <div className="flex flex-col justify-center items-center text-center">
                     <div className="bg-linear-to-r from-emerald-400 to-emerald-500 mb-4 rounded-md">

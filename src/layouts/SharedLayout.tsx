@@ -11,10 +11,10 @@ const SharedLayout = ({ role }: ShareLayoutProps) => {
     if (!user) {
         throw new Error("User not found");
     }
-    const navClass = ({ isActive }: any) => `py-2 w-full rounded-md  font-medium ${isActive ? 'bg-success text-white' : 'hover:bg-gray-200 text-gray-500'}`
+    const navClass = ({ isActive }: any) => `py-2 w-full rounded-md  font-medium ${isActive ? 'bg-emerald-500 text-white' : 'hover:bg-gray-200 text-gray-500'}`
 
     return (
-        <div className="min-h-screen container mx-auto">
+        <div className="min-h-screen container mx-auto ">
             <header className="pt-2 flex items-center justify-between">
                 <h1 className="text-2xl font-bold">Mallari's Poultry Supply</h1>
                 <div className="flex items-center gap-4">

@@ -9,6 +9,11 @@
     }
   ],
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "jsx": "react-jsx",
+    "types": [
+      "react",
+      "react-dom"
+    ]
   }
 }

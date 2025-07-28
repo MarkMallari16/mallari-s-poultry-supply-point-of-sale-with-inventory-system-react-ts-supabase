@@ -1,7 +1,7 @@
-import { useAuth } from "../../hooks/useAuth"
+// import { useAuth } from "../../hooks/useAuth"
 
 const DashboardCashier = () => {
-    const { logout } = useAuth();
+    // const { logout } = useAuth();
 
     return (
         <div>

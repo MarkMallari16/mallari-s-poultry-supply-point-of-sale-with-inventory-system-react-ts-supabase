@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 import Login from './pages/Login';
 import { AuthProvider } from './context/AuthContext';
 import CashierDashboard from './pages/cashier/CashierDashboard';
@@ -20,8 +20,8 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <Routes>
+            <Route path='/' element={<Navigate to="/login" />} />
             <Route path='/login' element={<Login />} />
-
             <Route
               path="/admin"
               element={

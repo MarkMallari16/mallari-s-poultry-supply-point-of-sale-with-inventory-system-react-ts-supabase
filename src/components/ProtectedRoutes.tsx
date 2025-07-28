@@ -10,7 +10,7 @@ const ProtectedRoutes = ({ children, allowedRole }: ProtectedRouteProps) => {
     const { user, loading } = useAuth();
 
     if (loading) {
-        return <div>Loading....</div>
+        return <div className="min-h-screen bg-green-50"></div>
     }
 
     if (!user) {

@@ -30,12 +30,12 @@ const SharedLayout = ({ role }: ShareLayoutProps) => {
             <div className="mt-10 mb-2 flex justify-between items-center text-center gap-2 p-1 bg-base-200 rounded-md">
                 {role === "admin" ?
                     <>
-                        <NavLink to="/admin/dashboard" className={navClass}>Dashboard</NavLink>
-                        <NavLink to="/admin/pos" className={navClass}>Point of Sale</NavLink>
-                        <NavLink to="/admin/inventory" className={navClass}>Inventory</NavLink>
-                        <NavLink to="/admin/sales-history" className={navClass}>Sales History</NavLink>
-                        <NavLink to="/admin/analytics" className={navClass}>Analytics</NavLink>
-                        <NavLink to="/admin/users" className={navClass}>Users</NavLink>
+                        <NavLink to="/admin/dashboard" caseSensitive className={navClass}>Dashboard</NavLink>
+                        <NavLink to="/admin/pos" caseSensitive className={navClass}>Point of Sale</NavLink>
+                        <NavLink to="/admin/inventory" caseSensitive className={navClass}>Inventory</NavLink>
+                        <NavLink to="/admin/sales-history" caseSensitive className={navClass}>Sales History</NavLink>
+                        <NavLink to="/admin/analytics" caseSensitive className={navClass}>Analytics</NavLink>
+                        <NavLink to="/admin/users" caseSensitive className={navClass}>Users</NavLink>
 
                     </>
                     :

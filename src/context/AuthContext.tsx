@@ -80,9 +80,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         loadSession();
+
+        //unsubscribe to avoid data leaks
         const { data: listener } = supabase.auth.onAuthStateChange(() => {
             loadSession();
         })
+
+        //cleanup
         return () => listener?.subscription.unsubscribe();
 
     }, [])

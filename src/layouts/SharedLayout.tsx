@@ -4,6 +4,7 @@ import { useAuthStore } from "../stores/useAuthStore"
 type ShareLayoutProps = {
     role: "admin" | "cashier"
 }
+
 const SharedLayout = ({ role }: ShareLayoutProps) => {
     const user = useAuthStore((state) => state.user);
     const logout = useAuthStore((state) => state.logout);

@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
 import type { Product } from "../../types/product";
 import { getAllProducts } from "../../services/api/products";
+import { useCountStore } from "../../stores/useCountStore";
 
 
 const Dashboard = () => {
     const [products, setProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState<boolean>(true);
+
+    //sample zustand 
+    const count = useCountStore((state) => state.count);
+    const increment = useCountStore((state) => state.increment);
+    const decrement = useCountStore((state) => state.decrement);
+
 
     const fetcthProducts = async () => {
         const result = await getAllProducts();
@@ -21,6 +28,10 @@ const Dashboard = () => {
     return (
         <div>
             <h1 className="text-xl font-bold pt-4 mb-4">Product Inventory</h1>
+            <h1 className="text-4xl">{count}</h1>
+            <button onClick={() => increment(1)}>Increment</button>
+            <button onClick={() => decrement(1)}>Decrement</button>
+
             {loading ? (
                 <p>Loading...</p>
             ) : (

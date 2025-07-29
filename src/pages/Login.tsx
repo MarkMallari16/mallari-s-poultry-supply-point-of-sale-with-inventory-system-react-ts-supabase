@@ -6,18 +6,29 @@ import { useNavigate } from "react-router";
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState<boolean>(false);
+
     const login = useAuthStore((state) => state.login);
     const navigate = useNavigate();
 
     //login user
     const handleLogin = async () => {
-        const user = await loginUser(email, password);
+        setLoading(true)
+        try {
+            const user = await loginUser(email, password);
 
-        if (user) {
-            login(user)
-            navigate(`/${user.role}/dashboard`)
-        } else {
-            alert("Login failed.")
+            if (user) {
+                login(user)
+                navigate(`/${user.role}/dashboard`)
+                setLoading(false)
+            } else {
+                alert("Login failed.")
+                setLoading(false)
+            }
+        } catch (error) {
+            console.log("Login error", error)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -54,7 +65,7 @@ const Login = () => {
                     <input type="password" value={password} onChange={handlePasswordChange} className="mt-1 input input-md   w-full focus:outline-success" placeholder="Enter password" />
                 </div>
                 <div className="mt-4">
-                    <button onClick={handleLogin} className="btn btn-md bg-linear-to-r from-emerald-400 to-emerald-500  w-full">Login</button>
+                    <button onClick={handleLogin} className="btn btn-md bg-linear-to-r from-emerald-400 to-emerald-500 disabled:bg-gray-200 disabled:bg-none disabled:text-gray-500 disabled:cursor-not-allowed  hover:from-emerald-400 hover:to-emerald-500 w-full" disabled={loading || !email || !password}>{loading ? 'Logging in' : 'Log in'}</button>
                 </div>
             </div>
         </div>

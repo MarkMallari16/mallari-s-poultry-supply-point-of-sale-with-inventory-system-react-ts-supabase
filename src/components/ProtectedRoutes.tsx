@@ -1,6 +1,6 @@
 import { Navigate } from "react-router";
-import { useAuth } from "../hooks/useAuth";
 import type { JSX } from "react";
+import { useAuthStore } from "../stores/useAuthStore";
 
 interface ProtectedRouteProps {
     children: JSX.Element;
@@ -8,11 +8,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoutes = ({ children, allowedRole }: ProtectedRouteProps) => {
-    const { user, loading } = useAuth();
-
-    if (loading) {
-        return <div className="min-h-screen bg-white"></div>
-    }
+    const user = useAuthStore((state) => state.user);
 
     if (!user) {
         return <Navigate to="/login" />
@@ -21,6 +17,7 @@ const ProtectedRoutes = ({ children, allowedRole }: ProtectedRouteProps) => {
     if (allowedRole && user.role !== allowedRole) {
         return <Navigate to={`/${user.role}`} replace />
     }
+    
     return children;
 }
 

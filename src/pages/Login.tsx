@@ -1,14 +1,24 @@
 import { useState } from "react";
-import { useAuth } from "../hooks/useAuth"
+import { useAuthStore } from "../stores/useAuthStore";
+import { loginUser } from "../services/api/login";
+import { useNavigate } from "react-router";
 
 const Login = () => {
-    const { login } = useAuth();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const login = useAuthStore((state) => state.login);
+    const navigate = useNavigate();
 
     //login user
     const handleLogin = async () => {
-        await login(email, password)
+        const user = await loginUser(email, password);
+
+        if (user) {
+            login(user)
+            navigate(`/${user.role}/dashboard`)
+        } else {
+            alert("Login failed.")
+        }
     }
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {

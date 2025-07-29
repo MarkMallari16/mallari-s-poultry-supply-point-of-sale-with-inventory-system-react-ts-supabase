@@ -1,16 +1,17 @@
-import { useAuth } from "../hooks/useAuth"
 import { NavLink, Outlet } from "react-router"
+import { useAuthStore } from "../stores/useAuthStore"
 
 type ShareLayoutProps = {
     role: "admin" | "cashier"
 }
 const SharedLayout = ({ role }: ShareLayoutProps) => {
-    const { user, logout } = useAuth();
+    const user = useAuthStore((state) => state.user);
+    const logout = useAuthStore((state) => state.logout);
 
-    console.log(user)
     if (!user) {
         throw new Error("User not found");
     }
+
     const navClass = ({ isActive }: any) => `py-2 w-full rounded-md  font-medium ${isActive ? 'bg-emerald-500 text-white' : 'hover:bg-gray-200 text-gray-500'}`
 
     return (

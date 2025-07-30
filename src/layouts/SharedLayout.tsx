@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router"
+import { Outlet } from "react-router"
 import { useAuthStore } from "../stores/useAuthStore"
 import Sidebar from "../components/navigation/Sidebar"
 

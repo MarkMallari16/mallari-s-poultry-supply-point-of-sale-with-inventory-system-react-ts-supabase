@@ -31,6 +31,11 @@ const Login = () => {
             setLoading(false)
         }
     }
+    const handleKeyEnterLogin = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            handleLogin();
+        }
+    }
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
@@ -62,7 +67,7 @@ const Login = () => {
                 </div>
                 <div className="mt-4">
                     <label htmlFor="username" className="font-medium">Password</label>
-                    <input type="password" value={password} onChange={handlePasswordChange} className="mt-1 input input-md   w-full focus:outline-success" placeholder="Enter password" />
+                    <input type="password" value={password} onChange={handlePasswordChange} onKeyUp={handleKeyEnterLogin} className="mt-1 input input-md   w-full focus:outline-success" placeholder="Enter password" />
                 </div>
                 <div className="mt-4">
                     <button onClick={handleLogin} className="btn btn-md bg-linear-to-r from-emerald-400 to-emerald-500 disabled:bg-gray-200 disabled:bg-none disabled:text-gray-500 disabled:cursor-not-allowed  hover:from-emerald-400 hover:to-emerald-500 w-full" disabled={loading || !email || !password}>{loading ? 'Logging in' : 'Log in'}</button>

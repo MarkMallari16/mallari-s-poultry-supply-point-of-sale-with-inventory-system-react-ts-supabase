@@ -2,7 +2,7 @@ import './App.css'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 import Login from './pages/Login';
 import CashierDashboard from './pages/cashier/CashierDashboard';
-import ProtectedRoutes from './components/ProtectedRoutes';
+import ProtectedRoutes from './components/auth/ProtectedRoutes';
 import NotFound from './pages/NotFound';
 import AdminDashboard from './pages/admin/AdminDashboard'
 import SharedLayout from './layouts/SharedLayout';

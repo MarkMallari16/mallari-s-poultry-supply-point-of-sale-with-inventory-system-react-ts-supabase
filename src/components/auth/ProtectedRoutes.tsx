@@ -1,6 +1,6 @@
 import { Navigate } from "react-router";
 import type { JSX } from "react";
-import { useAuthStore } from "../stores/useAuthStore";
+import { useAuthStore } from "../../stores/useAuthStore";
 
 interface ProtectedRouteProps {
     children: JSX.Element;

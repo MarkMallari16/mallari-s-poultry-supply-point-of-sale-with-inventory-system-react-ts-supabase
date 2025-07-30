@@ -54,7 +54,6 @@ const Login = () => {
                         <span className="material-symbols-outlined p-4">
                             pets
                         </span>
-
                     </div>
                     <div>
                         <h2 className="text-xl font-medium">Mallari's Poultry Supply</h2>

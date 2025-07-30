@@ -9,7 +9,7 @@ const Sidebar = ({ role }: RoleProps) => {
   const navClass = ({ isActive }: any) => `flex items-center gap-2 py-2 px-4 w-full rounded-md  font-medium ${isActive ? 'bg-emerald-100 text-emerald-800 ring-1 ring-inset ring-emerald-200' : 'hover:bg-gray-100 text-gray-500'}`
   const iconClass = "w-5 h-5 "
   return (
-    <div className="ps-2 pe-4 pt-4 bg-white ring-1 ring-gray-300">
+    <div className="ps-2 pe-4 pt-4 bg-white border-r border-gray-300">
       <div className="flex items-center gap-3">
         <div className="bg-linear-to-r from-emerald-400 to-emerald-500 rounded-md">
           <span className="material-symbols-outlined p-2">

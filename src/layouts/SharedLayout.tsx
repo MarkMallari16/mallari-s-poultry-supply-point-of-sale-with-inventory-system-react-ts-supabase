@@ -14,15 +14,13 @@ const SharedLayout = ({ role }: ShareLayoutProps) => {
         throw new Error("User not found");
     }
 
-
-
     return (
         <div className="min-h-screen grid grid-cols-[250px_1fr] bg-gray-100 ">
             {/**Sidebar */}
             <Sidebar role={role} />
             {/**Navigation Bar */}
             <div>
-                <header className="flex items-center justify-between ring-1 ring-gray-300 bg-white p-4">
+                <header className="flex items-center justify-between border-b border-gray-300 bg-white p-4">
                     <h1 className="text-2xl font-bold">Dashboard</h1>
                     <div className="flex items-center gap-4">
                         <h3 className="text-lg font-medium">{user?.full_name}</h3>

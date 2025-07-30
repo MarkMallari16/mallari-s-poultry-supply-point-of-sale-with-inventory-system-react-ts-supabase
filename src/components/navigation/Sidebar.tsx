@@ -6,25 +6,26 @@ interface RoleProps {
   role: string;
 }
 const Sidebar = ({ role }: RoleProps) => {
-  const navClass = ({ isActive }: any) => `flex items-center gap-2 py-2 px-4 w-full rounded-md  font-medium ${isActive ? 'bg-emerald-100 text-emerald-800 ring-1 ring-inset ring-emerald-200' : 'hover:bg-gray-100 text-gray-500'}`
+  const navClass = ({ isActive }: any) => `flex items-center gap-2 py-2 ps-4 py-2 w-full rounded-md  font-medium ${isActive ? 'bg-emerald-100 text-emerald-800 ring-1 ring-inset ring-emerald-200' : 'hover:bg-gray-100 text-gray-500'}`
   const iconClass = "w-5 h-5 "
   return (
-    <div className="ps-2 pe-4 pt-4 bg-white border-r border-gray-300">
-      <div className="flex items-center gap-3">
-        <div className="bg-linear-to-r from-emerald-400 to-emerald-500 rounded-md">
-          <span className="material-symbols-outlined p-2">
-            pets
-          </span>
-        </div>
-        <div>
-          <h1 className="text-sm font-medium">Mallari's Poultry Supply</h1>
-          <span className="text-sm text-gray-500">POS system</span>
+    <div className="pt-4 bg-white border-r border-gray-300">
+      <div className="pb-6  border-b border-gray-50">
+        <div className="flex items-center gap-3 ps-2 pe-4">
+          <div className="bg-linear-to-r from-emerald-400 to-emerald-500 rounded-md">
+            <span className="material-symbols-outlined p-2">
+              pets
+            </span>
+          </div>
+          <div>
+            <h1 className="text-sm font-medium">Mallari's Poultry Supply</h1>
+            <span className="text-sm text-gray-500">POS system</span>
+          </div>
         </div>
       </div>
-      <div className="pt-10 flex flex-col gap-1">
+      <div className="pt-4 flex flex-col gap-1 mx-2 ">
         {role === "admin" ?
           <>
-
             <NavLink to="/admin/dashboard" caseSensitive className={navClass}>
               <House className={iconClass} />
               Dashboard
@@ -53,10 +54,22 @@ const Sidebar = ({ role }: RoleProps) => {
           </>
           :
           <>
-            <NavLink to="/cashier/dashboard" className={navClass}>Dashboard</NavLink>
-            <NavLink to="/cashier/pos" className={navClass}>Point of Sale</NavLink>
-            <NavLink to="/cashier/sales-history" className={navClass}>Sales History</NavLink>
-            <NavLink to="/cashier/analytics" className={navClass}>Analytics</NavLink>
+            <NavLink to="/cashier/dashboard" className={navClass}>
+              <House className={iconClass} />
+              Dashboard
+            </NavLink>
+            <NavLink to="/cashier/pos" className={navClass}>
+              <ShoppingCart className={iconClass} />
+              Point of Sale
+            </NavLink>
+            <NavLink to="/cashier/sales-history" caseSensitive className={navClass}>
+              <Receipt className={iconClass} />
+              Sales History
+            </NavLink>
+            <NavLink to="/cashier/analytics" caseSensitive className={navClass}>
+              <ChartColumn className={iconClass} />
+              Analytics
+            </NavLink>
           </>
         }
       </div>

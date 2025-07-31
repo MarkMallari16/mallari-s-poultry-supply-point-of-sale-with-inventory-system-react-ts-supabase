@@ -1,30 +1,30 @@
-import { useEffect, useState } from "react";
-import type { Product } from "../../types/product";
-import { getAllProducts } from "../../services/api/products";
-import { useCountStore } from "../../stores/useCountStore";
+// import { useEffect, useState } from "react";
+// import type { Product } from "../../types/product";
+// import { getAllProducts } from "../../services/api/products";
+// import { useCountStore } from "../../stores/useCountStore";
 import { Box, ShoppingCart, TrendingUp, TriangleAlert } from "lucide-react";
 
 
 const Dashboard = () => {
-    const [products, setProducts] = useState<Product[]>([])
-    const [loading, setLoading] = useState<boolean>(true);
+    // const [products, setProducts] = useState<Product[]>([])
+    // const [loading, setLoading] = useState<boolean>(true);
 
-    //sample zustand 
-    const count = useCountStore((state) => state.count);
-    const increment = useCountStore((state) => state.increment);
-    const decrement = useCountStore((state) => state.decrement);
+    // //sample zustand 
+    // const count = useCountStore((state) => state.count);
+    // const increment = useCountStore((state) => state.increment);
+    // const decrement = useCountStore((state) => state.decrement);
 
 
-    const fetcthProducts = async () => {
-        const result = await getAllProducts();
-        setProducts(result)
-        setLoading(false)
-    }
+    // const fetcthProducts = async () => {
+    //     const result = await getAllProducts();
+    //     setProducts(result)
+    //     setLoading(false)
+    // }
 
-    //run once it rendered
-    useEffect(() => {
-        fetcthProducts();
-    }, [])
+    // //run once it rendered
+    // useEffect(() => {
+    //     fetcthProducts();
+    // }, [])
 
     return (
         <div>

@@ -1,7 +1,7 @@
 
 const SalesHistory = () => {
   return (
-    <div>SalesHistory</div>
+    <div>Sales History</div>
   )
 }
 

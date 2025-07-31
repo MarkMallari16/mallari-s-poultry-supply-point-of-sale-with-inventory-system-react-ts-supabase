@@ -13,12 +13,12 @@ const Sidebar = ({ role }: RoleProps) => {
       <div className="pb-6  border-b border-gray-50">
         <div className="flex items-center gap-3 ps-2 pe-4">
           <div className="bg-linear-to-r from-emerald-400 to-emerald-500 rounded-md">
-            <span className="material-symbols-outlined p-2">
+            <span className="material-symbols-outlined py-2 px-3">
               pets
             </span>
           </div>
           <div>
-            <h1 className="text-sm font-medium">Mallari's Poultry Supply</h1>
+            <h1 className="text-md font-medium">Mallari's Poultry Supply</h1>
             <span className="text-sm text-gray-500">POS system</span>
           </div>
         </div>

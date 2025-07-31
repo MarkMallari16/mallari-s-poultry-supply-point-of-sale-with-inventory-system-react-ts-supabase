@@ -1,6 +1,7 @@
 import { Outlet } from "react-router"
 import { useAuthStore } from "../stores/useAuthStore"
 import Sidebar from "../components/navigation/Sidebar"
+import { usePageTitle } from "../hooks/usePageTitle"
 
 type ShareLayoutProps = {
     role: "admin" | "cashier"
@@ -9,19 +10,20 @@ type ShareLayoutProps = {
 const SharedLayout = ({ role }: ShareLayoutProps) => {
     const user = useAuthStore((state) => state.user);
     const logout = useAuthStore((state) => state.logout);
+    const pageTitle = usePageTitle();
 
     if (!user) {
         throw new Error("User not found");
     }
 
     return (
-        <div className="min-h-screen grid grid-cols-[250px_1fr] bg-gray-100 ">
+        <div className="min-h-screen grid grid-cols-[280px_1fr] bg-gray-100 ">
             {/**Sidebar */}
             <Sidebar role={role} />
             {/**Navigation Bar */}
             <div>
                 <header className="flex items-center justify-between border-b border-gray-300 bg-white p-4">
-                    <h1 className="text-2xl font-bold">Dashboard</h1>
+                    <h1 className="text-2xl font-bold">{pageTitle}</h1>
                     <div className="flex items-center gap-4">
                         <h3 className="text-lg font-medium">{user?.full_name}</h3>
                         <button onClick={logout} className="btn btn-ghost">

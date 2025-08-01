@@ -22,6 +22,7 @@ const Login = () => {
         }
 
         setLoading(true)
+
         try {
             const user = await loginUser(email, password);
 

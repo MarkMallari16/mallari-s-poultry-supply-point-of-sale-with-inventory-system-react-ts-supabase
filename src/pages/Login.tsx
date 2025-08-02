@@ -15,8 +15,9 @@ const Login = () => {
     //login user
     const handleLogin = async () => {
         setError("")
+        const emailFormat = /^\S+@\S+\.\S+$/;
 
-        if (!/^\S+@\S+\.\S+$/.test(email)) {
+        if (!emailFormat.test(email)) {
             setError("Invalid email format");
             return;
         }

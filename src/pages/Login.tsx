@@ -22,7 +22,7 @@ const Login = () => {
             return;
         }
 
-        setLoading(true)
+        setLoading(true);
 
         try {
             const user = await loginUser(email, password);
@@ -65,7 +65,7 @@ const Login = () => {
             setError("");
         }
     }
-
+    const inputClass = `mt-1 input input-md w-full  ${error ? 'input-error outline-red-500' : 'focus:outline-success'}`
     return (
         <div className="px-4 lg:px-0 bg-emerald-50  min-h-screen grid place-items-center">
             <div className=" bg-white shadow-xl px-10 py-14 rounded-md w-full lg:w-1/4  ring-1 ring-inset ring-gray-200">
@@ -83,11 +83,11 @@ const Login = () => {
                 </div>
                 <div className="mt-10">
                     <label htmlFor="username" className="font-medium">Email</label>
-                    <input type="email" value={email} onChange={handleEmailChange} onKeyUp={handleKeyEnterLogin} className="mt-1 input input-md w-full focus:outline-success" placeholder="Enter username" />
+                    <input type="email" value={email} onChange={handleEmailChange} onKeyUp={handleKeyEnterLogin} className={inputClass} placeholder="Enter username" />
                 </div>
                 <div className="mt-4">
                     <label htmlFor="username" className="font-medium">Password</label>
-                    <input type="password" value={password} onChange={handlePasswordChange} onKeyUp={handleKeyEnterLogin} className="mt-1 input input-md   w-full focus:outline-success" placeholder="Enter password" />
+                    <input type="password" value={password} onChange={handlePasswordChange} onKeyUp={handleKeyEnterLogin} className={inputClass} placeholder="Enter password" />
                 </div>
                 {error && (
                     <div className="mt-2">

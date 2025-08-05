@@ -8,7 +8,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
-
+    //get login store from zustand
     const login = useAuthStore((state) => state.login);
     const navigate = useNavigate();
 
@@ -42,12 +42,14 @@ const Login = () => {
             setLoading(false)
         }
     }
+    //this will handling key if user "Enter" key
     const handleKeyEnterLogin = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             handleLogin();
         }
     }
 
+    //this will get the value of input email
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setEmail(value);
@@ -56,7 +58,7 @@ const Login = () => {
             setError("")
         }
     }
-
+    //this will get the value of input password
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setPassword(value);
@@ -66,6 +68,7 @@ const Login = () => {
         }
     }
     const inputClass = `mt-1 input input-md w-full  ${error ? 'input-error outline-red-500' : 'focus:outline-success'}`
+
     return (
         <div className="px-4 lg:px-0 bg-emerald-50  min-h-screen grid place-items-center">
             <div className=" bg-white shadow-xl px-10 py-14 rounded-md w-full lg:w-1/4  ring-1 ring-inset ring-gray-200">

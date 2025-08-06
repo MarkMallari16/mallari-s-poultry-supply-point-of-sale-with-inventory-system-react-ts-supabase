@@ -17,7 +17,6 @@ function App() {
   return (
     <>
       <BrowserRouter>
-
         <Routes>
           <Route path='/' element={<Navigate to="/login" />} />
           <Route path='/login' element={<Login />} />
@@ -46,9 +45,7 @@ function App() {
             <Route path='pos' element={<CashierDashboard />} />
             <Route path='sales-history' element={<CashierDashboard />} />
             <Route path='analytics' element={<CashierDashboard />} />
-
           </Route>
-
           <Route path='*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>

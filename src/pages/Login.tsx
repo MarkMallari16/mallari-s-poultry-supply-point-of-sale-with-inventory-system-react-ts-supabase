@@ -98,7 +98,7 @@ const Login = () => {
                     </div>
                 )}
                 <div className="mt-4">
-                    <button onClick={handleLogin} className="btn btn-md bg-linear-to-r from-emerald-400 to-emerald-500 disabled:opacity-50 disabled:bg-none disabled:text-gray-500 disabled:cursor-not-allowed hover:from-emerald-400 hover:to-emerald-600 w-full transition-all ease-in-out" disabled={loading || !email || !password}>{loading ? 'Logging in...' : 'Log in'}</button>
+                    <button onClick={handleLogin} className="btn btn-md bg-linear-to-r from-emerald-300 to-emerald-400 disabled:opacity-50 disabled:bg-none disabled:text-gray-500 disabled:cursor-not-allowed hover:from-emerald-400 hover:to-emerald-400 w-full transition-all ease-in-out" disabled={loading || !email || !password}>{loading ? 'Logging in...' : 'Log in'}</button>
                 </div>
             </div>
         </div>

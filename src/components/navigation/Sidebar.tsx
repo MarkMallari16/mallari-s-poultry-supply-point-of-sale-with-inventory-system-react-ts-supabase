@@ -50,7 +50,6 @@ const Sidebar = ({ role }: RoleProps) => {
               <User className={iconClass} />
               Users
             </NavLink>
-
           </>
           :
           <>

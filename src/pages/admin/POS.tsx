@@ -1,9 +1,11 @@
 
 const POS = () => {
     return (
-        <div>
-            <h1 className="text-2xl">Sample POS</h1>
-        </div>
+        <>
+            <div>
+                <h1 className="text-xl font-bold">Point of sale</h1>
+            </div>
+        </>
     )
 }
 

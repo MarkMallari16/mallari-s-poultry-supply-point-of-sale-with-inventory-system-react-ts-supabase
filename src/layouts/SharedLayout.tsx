@@ -17,7 +17,7 @@ const SharedLayout = ({ role }: ShareLayoutProps) => {
     }
 
     return (
-        <div className="min-h-screen grid grid-cols-[280px_1fr] bg-gray-100 ">
+        <div className="min-h-screen grid grid-cols-[280px_1fr] bg-gray-100">
             {/**Sidebar */}
             <Sidebar role={role} />
             {/**Navigation Bar */}

@@ -10,7 +10,7 @@ const Sidebar = ({ role }: RoleProps) => {
   const iconClass = "w-5 h-5 "
   return (
     <div className="pt-4 bg-white border-r border-gray-300">
-      <div className="pb-6  border-b border-gray-50">
+      <div className="pb-6 border-b border-gray-50">
         <div className="flex items-center gap-3 ps-2 pe-4">
           <div className="bg-linear-to-r from-emerald-400 to-emerald-500 rounded-md">
             <span className="material-symbols-outlined py-2 px-3">

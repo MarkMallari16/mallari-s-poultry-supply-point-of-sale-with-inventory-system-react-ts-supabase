@@ -14,7 +14,9 @@ export const loginUser = async (email: string, password: string): Promise<User |
     
     //get the user data once authenticated.
     const authUser = data.user;
+    
     console.log("Auth", authUser)
+
     const { data: userData, error: userError } = await supabase
         .from("users")
         .select("full_name,role")

@@ -25,37 +25,37 @@ const Dashboard = () => {
     // useEffect(() => {
     //     fetcthProducts();
     // }, [])
-
+    const overviewClasses = "flex justify-between items-center bg-white  p-5 rounded-md ring-1 ring-inset ring-gray-300"
     return (
         <div>
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-                <div className="flex justify-between items-center bg-white bg-linear-to-tr from-emerald-200 to-emerald-100 p-5 rounded-md">
+                <div className={overviewClasses}>
                     <div>
-                        <h3 className="text-emerald-800 font-medium">Product</h3>
-                        <h1 className="text-emerald-900 pt-2 text-3xl font-bold">29</h1>
+                        <h3 className=" font-medium">Product</h3>
+                        <h1 className=" pt-2 text-3xl font-bold">29</h1>
                     </div>
-                    <Box className="w-10 h-10 text-emerald-900" />
+                    <Box className="w-10 h-10 text-gray-500" />
                 </div>
-                <div className="flex justify-between items-center bg-white bg-linear-to-tr from-yellow-100 to-yellow-200 p-5 rounded-md">
+                <div className={overviewClasses}>
                     <div>
-                        <h3 className="text-yellow-800 font-medium">Low Stock</h3>
-                        <h1 className="text-yellow-900 pt-2 text-3xl font-bold">29</h1>
+                        <h3 className=" font-medium">Low Stock</h3>
+                        <h1 className=" pt-2 text-3xl font-bold">29</h1>
                     </div>
-                    <TriangleAlert className="w-10 h-10 text-yellow-900" />
+                    <TriangleAlert className="w-10 h-10 text-yellow-600" />
                 </div>
-                <div className="flex justify-between items-center bg-white bg-linear-to-tr from-blue-100 to-blue-200 p-5 rounded-md">
+                <div className={overviewClasses}>
                     <div>
-                        <h3 className="text-blue-800 font-medium">Transactions</h3>
-                        <h1 className="text-blue-900 pt-2 text-3xl font-bold">29</h1>
+                        <h3 className=" font-medium">Transactions</h3>
+                        <h1 className=" pt-2 text-3xl font-bold">29</h1>
                     </div>
-                    <ShoppingCart className="w-10 h-10 text-blue-900" />
+                    <ShoppingCart className="w-10 h-10 text-gray-500" />
                 </div>
-                <div className="flex justify-between items-center bg-white bg-linear-to-tr from-purple-100 to-purple-200 p-5 rounded-md">
+                <div className={overviewClasses}>
                     <div>
-                        <h3 className="text-purple-800 font-medium">Revenue</h3>
-                        <h1 className="text-purple-900 pt-2 text-3xl font-bold">29</h1>
+                        <h3 className=" font-medium">Revenue</h3>
+                        <h1 className=" pt-2 text-3xl font-bold">29</h1>
                     </div>
-                    <TrendingUp className="w-10 h-10 text-blue-900" />
+                    <TrendingUp className="w-10 h-10 text-gray-500" />
                 </div>
             </div>
 

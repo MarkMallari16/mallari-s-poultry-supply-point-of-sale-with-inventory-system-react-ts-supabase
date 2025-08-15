@@ -4,7 +4,6 @@
 // import { useCountStore } from "../../stores/useCountStore";
 import { Box, ShoppingCart, TrendingUp, TriangleAlert } from "lucide-react";
 
-
 const Dashboard = () => {
     // const [products, setProducts] = useState<Product[]>([])
     // const [loading, setLoading] = useState<boolean>(true);

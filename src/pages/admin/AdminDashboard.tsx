@@ -27,7 +27,7 @@ const Dashboard = () => {
     const overviewClasses = "flex justify-between items-center bg-white  p-5 rounded-md ring-1 ring-inset ring-gray-300"
     return (
         <div>
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
                 <div className={overviewClasses}>
                     <div>
                         <h3 className=" font-medium">Product</h3>

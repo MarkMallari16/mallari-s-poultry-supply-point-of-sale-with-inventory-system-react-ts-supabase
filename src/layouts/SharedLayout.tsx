@@ -16,11 +16,14 @@ const SharedLayout = ({ role }: ShareLayoutProps) => {
     }
 
     return (
-        <div className="min-h-screen grid grid-cols-[4.5rem_1fr] sm:grid-cols-[200px_1fr] md:grid-cols-[240px_1fr] lg:grid-cols-[280px_1fr] xl:grid-cols-[320px_1fr] bg-gray-100">
+        <div className="min-h-screen flex bg-gray-100">
             {/**Sidebar */}
-            <Sidebar role={role} />
+            <aside className="sm:fixed top-0 left-0 h-screen w-[4.5rem] md:w-[240px] lg:w-[280px] xl:w-[320px] bg-white border-r border-gray-300">
+                <Sidebar role={role} />
+            </aside>
+
             {/**Navigation Bar */}
-            <div>
+            <div className="flex-1 sm:ml-[4.5rem] md:ml-[240px] lg:ml-[280px] xl:ml-[320px]">
                 <header className="flex items-center justify-between border-b border-gray-300 bg-white p-4">
                     <h1 className="text-2xl font-bold">{pageTitle}</h1>
                     <div className="flex items-center gap-2">
@@ -32,6 +35,7 @@ const SharedLayout = ({ role }: ShareLayoutProps) => {
                         <h3 className="text-lg  text-gray-600 ">{user?.role}</h3>
                     </div>
                 </header>
+                {/*Content Here */}
                 <main className="p-4">
                     <Outlet />
                 </main>

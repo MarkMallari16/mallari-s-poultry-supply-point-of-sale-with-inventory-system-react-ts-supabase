@@ -12,11 +12,11 @@ const Sidebar = ({ role }: RoleProps) => {
   const logout = useAuthStore((state) => state.logout);
 
 
-  const navClass = ({ isActive }: any) => ` flex items-center gap-2 py-2 ps-4 py-2 w-full rounded-md  font-medium ${isActive ? 'bg-emerald-100 text-emerald-800 ring-1 ring-inset ring-emerald-200' : 'hover:bg-gray-100 text-gray-500'}`
+  const navClass = ({ isActive }: any) => `flex items-center gap-2 py-2 ps-4 py-2 w-full rounded-md  font-medium ${isActive ? 'bg-emerald-100 text-emerald-800 ring-1 ring-inset ring-emerald-200' : 'hover:bg-gray-100 text-gray-500'}`
   const iconClass = "w-5 h-5 "
-  const linkTextClass = "hidden sm:block";
+  const linkTextClass = "hidden md:block";
   return (
-    <div className=" flex flex-col justify-between pt-4 bg-white border-r border-gray-300">
+    <div className="h-screen flex flex-col justify-between pt-4">
       <div>
         <div className="pb-6 border-b border-gray-50">
           <div className="flex  items-center gap-3 px-3 lg-px-0 lg:ps-2 lg:pe-4">
@@ -26,8 +26,8 @@ const Sidebar = ({ role }: RoleProps) => {
               </span>
             </div>
             <div>
-              <h1 className="text-md font-medium hidden sm:block">Mallari's Poultry Supply</h1>
-              <span className="text-sm text-gray-500  hidden sm:block">POS system</span>
+              <h1 className="text-md font-medium hidden md:block">Mallari's Poultry Supply</h1>
+              <span className="text-sm text-gray-500  hidden md:block">POS system</span>
             </div>
           </div>
         </div>
@@ -82,14 +82,14 @@ const Sidebar = ({ role }: RoleProps) => {
         </div>
       </div>
 
-      <div className="sm:flex  sm:justify-between items-center lg:gap-2 bg-gray-50 p-2 rounded-md lg:mx-2 mb-4">
+      <div className="sm:flex sm:justify-between items-center lg:gap-2 bg-gray-50 p-2 rounded-md lg:mx-2 mb-4">
         <div className="flex items-center gap-2">
-          <div className="avatar hidden sm:block">
+          <div className="avatar hidden md:block">
             <div className="w-10 h-10 rounded-full">
               <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" />
             </div>
           </div>
-          <div className="hidden sm:block">
+          <div className="hidden md:block">
             <h2 className="font-medium">{user?.full_name}</h2>
             <p className="text-gray-600">{userRole}</p>
           </div>

@@ -7,7 +7,7 @@ const SalesHistory = () => {
         <h1 className="text-xl font-bold">Sales History</h1>
         <span className="text-gray-500">Manage your sales</span>
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center justify-center">
         <Receipt className="size-20 text-gray-500" />
       </div>
     </div>

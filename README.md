@@ -11,7 +11,7 @@ This project is tailored for small businesses, specifically for Mallari Poultry 
 
 🗄️ Supabase – Backend as a service (database, authentication, APIs)
 
-🎨 TailwindCSS – Clean and responsive UI components
+🎨 TailwindCSS / DaisyUI – Clean and responsive UI components
 
 ✨ Features
 

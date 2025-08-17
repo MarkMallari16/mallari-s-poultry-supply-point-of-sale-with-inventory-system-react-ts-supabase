@@ -20,3 +20,6 @@ This project is tailored for small businesses, specifically for Mallari Poultry 
 ✅ Customer and product records
 ✅ Real-time database powered by Supabase
 ✅ Responsive design for desktop & tablet
+
+<img width="1919" height="940" alt="image" src="https://github.com/user-attachments/assets/70761f3f-032e-4d53-abe6-b2236855f8b1" />
+

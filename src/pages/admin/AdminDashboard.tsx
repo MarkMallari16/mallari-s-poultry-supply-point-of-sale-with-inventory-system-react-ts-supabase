@@ -33,28 +33,28 @@ const Dashboard = () => {
                         <h3 className=" font-medium">Product</h3>
                         <h1 className=" pt-2 text-3xl font-bold">29</h1>
                     </div>
-                    <Box className="w-10 h-10 text-gray-500" />
+                    <Box className="w-10 h-10 text-gray-600" />
                 </div>
                 <div className={overviewClasses}>
                     <div>
                         <h3 className=" font-medium">Low Stock</h3>
                         <h1 className=" pt-2 text-3xl font-bold">29</h1>
                     </div>
-                    <TriangleAlert className="w-10 h-10 text-yellow-600" />
+                    <TriangleAlert className="w-10 h-10 text-amber-500" />
                 </div>
                 <div className={overviewClasses}>
                     <div>
                         <h3 className=" font-medium">Transactions</h3>
                         <h1 className=" pt-2 text-3xl font-bold">29</h1>
                     </div>
-                    <ShoppingCart className="w-10 h-10 text-gray-500" />
+                    <ShoppingCart className="w-10 h-10 text-gray-600" />
                 </div>
                 <div className={overviewClasses}>
                     <div>
                         <h3 className=" font-medium">Revenue</h3>
                         <h1 className=" pt-2 text-3xl font-bold">29</h1>
                     </div>
-                    <TrendingUp className="w-10 h-10 text-gray-500" />
+                    <TrendingUp className="w-10 h-10 text-gray-600" />
                 </div>
             </div>
 

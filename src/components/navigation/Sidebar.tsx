@@ -82,7 +82,7 @@ const Sidebar = ({ role }: RoleProps) => {
         </div>
       </div>
 
-      <div className="sm:flex sm:justify-between items-center lg:gap-2 bg-gray-50 p-2 rounded-md lg:mx-2 mb-4">
+      <div className="sm:flex sm:justify-between items-center lg:gap-2 p-2 rounded-md lg:mx-2 mb-4">
         <div className="flex items-center gap-2">
           <div className="avatar hidden md:block">
             <div className="w-10 h-10 rounded-full">
@@ -95,7 +95,7 @@ const Sidebar = ({ role }: RoleProps) => {
           </div>
         </div>
         <div>
-          <button onClick={logout} className="btn btn-ghost">
+          <button onClick={logout} className="btn bg-base-200 btn-ghost border">
             <LogOut className="size-4" />
           </button>
         </div>

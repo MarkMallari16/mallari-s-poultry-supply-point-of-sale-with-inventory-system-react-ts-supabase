@@ -14,8 +14,7 @@ const SharedLayout = ({ role }: ShareLayoutProps) => {
 
     const user = useAuthStore((state) => state.user);
     const pageTitle = usePageTitle();
-    const isSidebarOpen = useSidebarStore((state) => state.isSidebarOpen);
-    const toggleSidebar = useSidebarStore((state) => state.toggleSidebar);
+    const {isSidebarOpen, toggleSidebar} = useSidebarStore();
 
     if (!user) {
         throw new Error("User not found");
@@ -29,10 +28,10 @@ const SharedLayout = ({ role }: ShareLayoutProps) => {
             </aside>
 
             {/**Navigation Bar */}
-            <div className={`flex-1 ${isSidebarOpen ? "md:ml-[240px] lg:ml-[280px] xl:ml-[320px]" : "ml-[4.5rem]"} transition-all ease-in-out duration-300`}>
+            <div className={`flex-1 ${isSidebarOpen ? "md:ml-[240px] lg:ml-[280px] xl:ml-[320px]" : "ml-[4.5rem]"} transition-all ease-in-out duration-300 `}>
                 <header className="flex items-center justify-between border-b border-gray-300 bg-white p-4">
                     <div className="flex items-center gap-2">
-                        <button className="cursor-pointer text-gray-600" onClick={toggleSidebar}>
+                        <button className="cursor-pointer text-gray-500 bg-gray-100 p-1 rounded-md" onClick={toggleSidebar}>
                             {
                                 isSidebarOpen ? <PanelLeftClose /> : <PanelRightClose />
                             }

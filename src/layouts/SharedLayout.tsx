@@ -31,7 +31,7 @@ const SharedLayout = ({ role }: ShareLayoutProps) => {
             <div className={`flex-1 ${isSidebarOpen ? "md:ml-[240px] lg:ml-[280px] xl:ml-[320px]" : "ml-[4.5rem]"} transition-all ease-in-out duration-300 `}>
                 <header className="flex items-center justify-between border-b border-gray-300 bg-white p-4">
                     <div className="flex items-center gap-2">
-                        <button className="cursor-pointer text-gray-500 bg-gray-100 p-1 rounded-md" onClick={toggleSidebar}>
+                        <button className="hidden lg:block cursor-pointer text-gray-500 bg-gray-100 p-1 rounded-md" onClick={toggleSidebar}>
                             {
                                 isSidebarOpen ? <PanelLeftClose /> : <PanelRightClose />
                             }

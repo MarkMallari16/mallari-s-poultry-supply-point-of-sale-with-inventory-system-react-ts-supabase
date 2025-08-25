@@ -9,6 +9,6 @@ type Action = {
 }
 
 export const useSidebarStore = create<State & Action>((set) => ({
-    isSidebarOpen: true,
+    isSidebarOpen: false,
     toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen }))
 }))

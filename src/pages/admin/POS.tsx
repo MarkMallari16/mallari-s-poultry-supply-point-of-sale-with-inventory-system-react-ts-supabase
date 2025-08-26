@@ -1,4 +1,4 @@
-import { Banknote, BanknoteArrowDown, Minus, Plus, ShoppingCart } from "lucide-react"
+import { Banknote, Minus, Plus, ShoppingCart } from "lucide-react"
 
 const POS = () => {
     return (
@@ -6,7 +6,7 @@ const POS = () => {
             <div>
                 <h1 className="text-xl font-bold">Point of sale</h1>
             </div>
-            <div className="mt-4 grid grid-cols-[1fr_30%] gap-8">
+            <div className="mt-4 grid grid-cols-[1fr_30%] gap-6">
                 <div>
                     <div className="mb-4 bg-white p-4 rounded-md border border-gray-300">
                         <label htmlFor="productSearch" className="text-gray-500">Search product</label>
@@ -82,10 +82,10 @@ const POS = () => {
                                 <ShoppingCart className="text-emerald-500" />
                                 <h2 className="text-xl font-medium">Cart (2)</h2>
                             </div>
-                            <h2 className="cursor-pointer text-error font-medium bg-error/10 px-2 py-1 rounded-md">Clear All</h2>
+                            <button className="btn cursor-pointer text-error font-medium bg-error/10 rounded-md">Clear All</button>
                         </div>
 
-                        <div className="pt-4 overflow-y-auto h-96">
+                        <div className="pt-6 overflow-y-auto h-96">
                             <div className="bg-gray-100 p-5 rounded-sm flex w-full gap-5">
                                 <div className="w-20 object-cover">
                                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsGuYEGUgBZKz49g4JeSB-at0vRjW-B_sgLg&s" alt="product" />
@@ -98,11 +98,11 @@ const POS = () => {
                                     <div className="flex justify-between gap-2 w-full">
                                         <p className="font-medium">$41</p>
                                         <div className="flex justify-between items-center gap-5">
-                                            <button className="cursor-pointer bg-white p-2 rounded-full border border-gray-300">
+                                            <button className="btn btn-circle cursor-pointer bg-white border border-gray-300">
                                                 <Minus className="size-4" />
                                             </button>
                                             <p className="text-lg">2</p>
-                                            <button className=" cursor-pointer bg-white p-2 rounded-full border border-gray-300">
+                                            <button className="btn btn-circle cursor-pointer bg-white border border-gray-300">
                                                 <Plus className="size-4" />
                                             </button>
                                         </div>
@@ -127,15 +127,14 @@ const POS = () => {
                                     <div className="flex justify-between gap-2 w-full">
                                         <p className="font-medium">$41</p>
                                         <div className="flex justify-between items-center gap-5">
-                                            <button className="cursor-pointer bg-white p-2 rounded-full border border-gray-300">
+                                            <button className="btn btn-circle cursor-pointer bg-white border border-gray-300">
                                                 <Minus className="size-4" />
                                             </button>
                                             <p className="text-lg">2</p>
-                                            <button className=" cursor-pointer bg-white p-2 rounded-full border border-gray-300">
+                                            <button className="btn btn-circle cursor-pointer bg-white border border-gray-300">
                                                 <Plus className="size-4" />
                                             </button>
                                         </div>
-
 
                                     </div>
                                     <div className="flex justify-end pt-4 ">
@@ -174,7 +173,6 @@ const POS = () => {
 
                             </div>
                         </div>
-
                         <div className="flex items-center justify-between mt-4">
                             <h3 className="font-medium text-xl">Total</h3>
                             <h1 className="text-2xl font-bold text-emerald-500">$292.24</h1>

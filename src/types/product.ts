@@ -1,4 +1,4 @@
-export interface Product {
+export type Product = {
     id: number,
     name: string,
     brand: string,
@@ -6,4 +6,8 @@ export interface Product {
     stock: number,
     unit: string,
     created_at: string
+    image_url: string
+}
+export type ProductWithUrl = Product & {
+    publicUrl: string;
 }

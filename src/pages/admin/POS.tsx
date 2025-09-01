@@ -1,77 +1,74 @@
-import { Banknote, Minus, Plus, ShoppingCart } from "lucide-react"
+import { Banknote, Minus, PawPrint, Plus, ShoppingCart } from "lucide-react"
+import { useEffect, useState } from "react"
+import type { ProductWithUrl } from "../../types/product"
+import type { Category } from "../../types/categories";
+import { getAllProducts } from "../../services/api/products";
+import { getAllCategories } from "../../services/api/categories";
 
 const POS = () => {
+
+    const [products, setProducts] = useState<ProductWithUrl[]>();
+    const [categories, setCategories] = useState<Category[]>();
+
+    const fetchProducts = async () => {
+        const results = await getAllProducts();
+        setProducts(results);
+
+    }
+
+    const fetchCategories = async () => {
+        const results = await getAllCategories();
+        setCategories(results);
+        console.log(results);
+    }
+    useEffect(() => {
+        fetchProducts();
+        fetchCategories();
+    }, [])
+
+
     return (
         <>
             <div>
-                <h1 className="text-xl font-bold">Point of sale</h1>
+                <h1 className="text-xl font-bold">Category</h1>
+                <div className="mt-2 flex gap-2">
+                    {
+                        categories?.map(category => (
+                            <button key={category.id} className="btn">{category.name}</button>
+                        ))
+                    }
+                </div>
             </div>
             <div className="mt-4 grid grid-cols-[1fr_30%] gap-6">
+
                 <div>
-                    <div className="mb-4 bg-white p-4 rounded-md border border-gray-300">
+                    
+                    {/* <div className="mb-4 bg-white p-4 rounded-md border border-gray-300">
                         <label htmlFor="productSearch" className="text-gray-500">Search product</label>
                         <input type="text" id="productSearch" placeholder="Search Product Here..." className="input w-full " />
-                    </div>
-                    <div className="flex flex-wrap lg:flex-nowrap gap-4">
-                        <div className="card bg-base-100 w-full shadow-sm cursor-pointer">
-                            <figure>
-                                <img
-                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsGuYEGUgBZKz49g4JeSB-at0vRjW-B_sgLg&s"
-                                    alt="Shoes" />
-                            </figure>
-                            <div className="card-body">
-                                <h2 className="card-title">Card Title</h2>
-                                <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-                                {/* <div className="card-actions justify-end">
+                    </div> */}
+                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                        {
+                            products?.map(product => (
+                                <div key={product.id} className="card bg-base-100 w-full shadow-sm cursor-pointer">
+                                    <figure>
+                                        {product.publicUrl ?
+                                            <img
+                                                src={product.publicUrl} />
+                                            : <PawPrint className="size-40 text-gray-500" />}
+                                    </figure>
+                                    <div className="card-body">
+                                        <h2 className="card-title font-bold text-xl">{product.name}</h2>
+                                        <p className="text-gray-600 text-lg">{product.price}</p>
+                                        {/* <div className="card-actions justify-end">
                                     <button className="btn btn-primary">Buy Now</button>
                                 </div> */}
-                            </div>
-                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        }
 
-                        <div className="card bg-base-100 w-full shadow-sm cursor-pointer">
-                            <figure>
-                                <img
-                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsGuYEGUgBZKz49g4JeSB-at0vRjW-B_sgLg&s"
-                                    alt="Shoes" />
-                            </figure>
-                            <div className="card-body">
-                                <h2 className="card-title">Card Title</h2>
-                                <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-                                {/* <div className="card-actions justify-end">
-                                    <button className="btn btn-primary">Buy Now</button>
-                                </div> */}
-                            </div>
-                        </div>
 
-                        <div className="card bg-base-100 w-full shadow-sm cursor-pointer">
-                            <figure>
-                                <img
-                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsGuYEGUgBZKz49g4JeSB-at0vRjW-B_sgLg&s"
-                                    alt="Shoes" />
-                            </figure>
-                            <div className="card-body">
-                                <h2 className="card-title">Card Title</h2>
-                                <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-                                {/* <div className="card-actions justify-end">
-                                    <button className="btn btn-primary">Buy Now</button>
-                                </div> */}
-                            </div>
-                        </div>
-
-                        <div className="card bg-base-100 w-full shadow-sm cursor-pointer">
-                            <figure>
-                                <img
-                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsGuYEGUgBZKz49g4JeSB-at0vRjW-B_sgLg&s"
-                                    alt="Shoes" />
-                            </figure>
-                            <div className="card-body">
-                                <h2 className="card-title">Card Title</h2>
-                                <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-                                {/* <div className="card-actions justify-end">
-                                    <button className="btn btn-primary">Buy Now</button>
-                                </div> */}
-                            </div>
-                        </div>
                     </div>
                 </div>
 

@@ -11,10 +11,10 @@ export const loginUser = async (email: string, password: string): Promise<User |
         console.error("Login failed:", error?.message)
         return null;
     }
-    
+
     //get the user data once authenticated.
     const authUser = data.user;
-    
+
     console.log("Auth", authUser)
 
     const { data: userData, error: userError } = await supabase

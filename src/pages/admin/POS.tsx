@@ -4,6 +4,7 @@ import type { ProductWithUrl } from "../../types/product"
 import type { Category } from "../../types/categories";
 import { getAllProducts } from "../../services/api/products";
 import { getAllCategories } from "../../services/api/categories";
+import GcashLogo from "../../../public/assets/gcash.png";
 
 const POS = () => {
 
@@ -176,6 +177,10 @@ const POS = () => {
                             <button className="btn btn-success w-full mt-4">
                                 <Banknote />
                                 Pay Cash
+                            </button>
+                            <button className="btn btn- w-full mt-3">
+                                <img src={GcashLogo} alt="Gcash Logo" className="w-6" />
+                                GCash
                             </button>
                         </div>
                     </div>

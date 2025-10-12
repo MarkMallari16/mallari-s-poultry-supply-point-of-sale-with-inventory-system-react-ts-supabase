@@ -5,6 +5,7 @@ import type { Category } from "../../types/categories";
 import { getAllProducts } from "../../services/api/products";
 import { getAllCategories } from "../../services/api/categories";
 import GcashLogo from "../../../public/assets/gcash.png";
+import ProductCard from "../../components/POS/ProductCard";
 
 const POS = () => {
 
@@ -49,31 +50,14 @@ const POS = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
                         {
                             products?.map(product => (
-                                <div key={product.id} className="card bg-base-100 w-full shadow-sm cursor-pointer">
-                                    <figure>
-                                        {product.publicUrl ?
-                                            <img
-                                                src={product.publicUrl} />
-                                            : <PawPrint className="size-40 text-gray-500" />}
-                                    </figure>
-                                    <div className="card-body">
-                                        <h2 className="card-title font-bold text-xl">{product.name}</h2>
-                                        <p className="text-gray-600 text-lg">{product.price}</p>
-                                        {/* <div className="card-actions justify-end">
-                                    <button className="btn btn-primary">Buy Now</button>
-                                </div> */}
-                                    </div>
-                                </div>
+                                <ProductCard product={product} />
                             ))
                         }
-
-
                     </div>
                 </div>
-
                 <div>
                     <div className="bg-white p-5 rounded-md border border-gray-300 shadow-xs">
-                        <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center mb-2">
                             <div className="flex items-center gap-2">
                                 <ShoppingCart className="text-emerald-500" />
                                 <h2 className="text-xl font-medium">Cart (2)</h2>

@@ -5,16 +5,15 @@ This project is tailored for small businesses, specifically for Mallari Poultry 
 
 🚀 Tech Stack
 
-⚛️ React + TypeScript – Frontend framework with type safety
+⚛️ React + TypeScript 
 
-⚡ Vite – Fast build tool with HMR
+⚡ Vite 
 
-🗄️ Supabase – Backend as a service (database, authentication, APIs)
+🗄️ Supabase
 
-🎨 TailwindCSS / DaisyUI – Clean and responsive UI components
+🎨 TailwindCSS / DaisyUI
 
 ✨ Features
-
 ✅ User-friendly POS interface for quick transactions
 ✅ Inventory management (add, update, track stock)
 ✅ Customer and product records

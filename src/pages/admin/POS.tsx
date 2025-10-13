@@ -1,4 +1,4 @@
-import { Banknote, Minus, PawPrint, Plus, ShoppingCart } from "lucide-react"
+import { Banknote, Minus, Plus, ShoppingCart } from "lucide-react"
 import { useEffect, useState } from "react"
 import type { ProductWithUrl } from "../../types/product"
 import type { Category } from "../../types/categories";

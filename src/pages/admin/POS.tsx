@@ -4,7 +4,7 @@ import type { ProductWithUrl } from "../../types/product"
 import type { Category } from "../../types/categories";
 import { getAllProducts } from "../../services/api/products";
 import { getAllCategories } from "../../services/api/categories";
-import GcashLogo from "../../../public/assets/gcash.png";
+import GcashLogo from "../../assets/gcash.png";
 import ProductCard from "../../components/POS/ProductCard";
 
 const POS = () => {

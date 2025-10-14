@@ -9,8 +9,6 @@ const Inventory = () => {
       addModal.current?.showModal();
     }
   }
-
-
   return (
     <>
       <div className="flex justify-between items-center">
@@ -28,7 +26,6 @@ const Inventory = () => {
             <p className="py-4">Press ESC key or click the button below to close</p>
             <div className="modal-action">
               <form method="dialog">
-                {/* if there is a button in form, it will close the modal */}
                 <button className="btn">Close</button>
               </form>
             </div>
@@ -42,32 +39,40 @@ const Inventory = () => {
           <thead>
             <tr>
               <th></th>
-              <th>Name</th>
-              <th>Job</th>
-              <th>Favorite Color</th>
+              <th>Product Name</th>
+              <th>Category</th>
+              <th>Quantity</th>
+              <th>Unit</th>
+              <th>Date Added</th>
             </tr>
           </thead>
           <tbody>
             {/* row 1 */}
             <tr>
               <th>1</th>
-              <td>Cy Ganderton</td>
-              <td>Quality Control Specialist</td>
-              <td>Blue</td>
+              <td>Whisker Delight Cat Food</td>
+              <td>Cat Food</td>
+              <td>120</td>
+              <td>Bags</td>
+              <td>2025-10-10</td>
             </tr>
             {/* row 2 */}
             <tr>
               <th>2</th>
-              <td>Hart Hagerty</td>
-              <td>Desktop Support Technician</td>
-              <td>Purple</td>
+              <td>Pawfect Bites Dog Kibble</td>
+              <td>Dog Food</td>
+              <td>80</td>
+              <td>Bags</td>
+              <td>2025-10-12</td>
             </tr>
             {/* row 3 */}
             <tr>
               <th>3</th>
-              <td>Brice Swyre</td>
-              <td>Tax Accountant</td>
-              <td>Red</td>
+              <td>NutriMix Pet Treats</td>
+              <td>Pet Snacks</td>
+              <td>200</td>
+              <td>Boxes</td>
+              <td>2025-10-13</td>
             </tr>
           </tbody>
         </table>

@@ -47,7 +47,6 @@ const Inventory = () => {
             </tr>
           </thead>
           <tbody>
-            {/* row 1 */}
             <tr>
               <th>1</th>
               <td>Whisker Delight Cat Food</td>
@@ -56,7 +55,6 @@ const Inventory = () => {
               <td>Bags</td>
               <td>2025-10-10</td>
             </tr>
-            {/* row 2 */}
             <tr>
               <th>2</th>
               <td>Pawfect Bites Dog Kibble</td>
@@ -65,7 +63,6 @@ const Inventory = () => {
               <td>Bags</td>
               <td>2025-10-12</td>
             </tr>
-            {/* row 3 */}
             <tr>
               <th>3</th>
               <td>NutriMix Pet Treats</td>

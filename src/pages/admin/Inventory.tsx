@@ -9,6 +9,7 @@ const Inventory = () => {
       addModal.current?.showModal();
     }
   }
+  
   return (
     <>
       <div className="flex justify-between items-center">

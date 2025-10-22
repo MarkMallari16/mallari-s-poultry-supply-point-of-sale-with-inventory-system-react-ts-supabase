@@ -23,26 +23,18 @@ const Users = () => {
                             {/* row 1 */}
                             <tr>
                                 <th>1</th>
-                                <td>Cy Ganderton</td>
-                                <td>Quality Control Specialist</td>
-                                <td>Blue</td>
-                                <td>Blue</td>
+                                <td>Mark Mallari</td>
+                                <td>admin@gmail.com</td>
+                                <td>Admin</td>
+                                <td>Active</td>
                             </tr>
                             {/* row 2 */}
                             <tr>
-                                <th>1</th>
-                                <td>Cy Ganderton</td>
-                                <td>Quality Control Specialist</td>
-                                <td>Blue</td>
-                                <td>Blue</td>
-                            </tr>
-                            {/* row 3 */}
-                            <tr>
-                                <th>1</th>
-                                <td>Cy Ganderton</td>
-                                <td>Quality Control Specialist</td>
-                                <td>Blue</td>
-                                <td>Blue</td>
+                                <th>2</th>
+                                <td>Jobert</td>
+                                <td>cashier@gmail.com</td>
+                                <td>Cashier</td>
+                                <td>Active</td>
                             </tr>
                         </tbody>
                     </table>

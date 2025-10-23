@@ -20,14 +20,6 @@ const Users = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* row 1 */}
-                            <tr>
-                                <th>1</th>
-                                <td>Mark Mallari</td>
-                                <td>admin@gmail.com</td>
-                                <td>Admin</td>
-                                <td>Active</td>
-                            </tr>
                             {/* row 2 */}
                             <tr>
                                 <th>2</th>

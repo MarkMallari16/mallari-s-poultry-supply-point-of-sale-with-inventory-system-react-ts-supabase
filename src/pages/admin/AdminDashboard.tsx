@@ -1,29 +1,6 @@
-// import { useEffect, useState } from "react";
-// import type { Product } from "../../types/product";
-// import { getAllProducts } from "../../services/api/products";
-// import { useCountStore } from "../../stores/useCountStore";
 import { Box, ShoppingCart, TrendingUp, TriangleAlert } from "lucide-react";
 
 const Dashboard = () => {
-    // const [products, setProducts] = useState<Product[]>([])
-    // const [loading, setLoading] = useState<boolean>(true);
-
-    // //sample zustand 
-    // const count = useCountStore((state) => state.count);
-    // const increment = useCountStore((state) => state.increment);
-    // const decrement = useCountStore((state) => state.decrement);
-
-
-    // const fetcthProducts = async () => {
-    //     const result = await getAllProducts();
-    //     setProducts(result)
-    //     setLoading(false)
-    // }
-
-    // //run once it rendered
-    // useEffect(() => {
-    //     fetcthProducts();
-    // }, [])
     const overviewClasses = "flex justify-between items-center bg-white  p-5 rounded-md ring-1 ring-inset ring-gray-300"
     return (
         <div>
@@ -57,7 +34,14 @@ const Dashboard = () => {
                     <TrendingUp className="w-10 h-10 text-gray-600" />
                 </div>
             </div>
-
+            <section className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
+                <div className="bg-white  p-5 rounded-md ring-1 ring-inset ring-gray-300">
+                    <h1>Chart 1</h1>
+                </div>
+                <div className="bg-white  p-5 rounded-md ring-1 ring-inset ring-gray-300">
+                    <h1>Chart 2</h1>
+                </div>
+            </section>
             {/* 
             {loading ? (
                 <p>Loading...</p>

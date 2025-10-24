@@ -20,7 +20,7 @@ const Users = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* row 2 */}
+                            {/* row 2 data */}
                             <tr>
                                 <th>2</th>
                                 <td>Jobert</td>

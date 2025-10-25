@@ -34,12 +34,18 @@ const Dashboard = () => {
                     <TrendingUp className="w-10 h-10 text-gray-600" />
                 </div>
             </div>
-            <section className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
+            <section className="mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2">
                 <div className="bg-white  p-5 rounded-md ring-1 ring-inset ring-gray-300">
                     <h1>Chart 1</h1>
                 </div>
                 <div className="bg-white  p-5 rounded-md ring-1 ring-inset ring-gray-300">
                     <h1>Chart 2</h1>
+                </div>
+                <div className="bg-white  p-5 rounded-md ring-1 ring-inset ring-gray-300">
+                    <h1>Chart 3</h1>
+                </div>
+                <div className="bg-white  p-5 rounded-md ring-1 ring-inset ring-gray-300">
+                    <h1>Chart 4</h1>
                 </div>
             </section>
             {/* 

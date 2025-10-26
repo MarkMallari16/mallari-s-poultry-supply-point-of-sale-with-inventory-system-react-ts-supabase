@@ -9,7 +9,7 @@ const Inventory = () => {
       addModal.current?.showModal();
     }
   }
-  
+
   return (
     <>
       <div className="flex justify-between items-center">
@@ -45,6 +45,7 @@ const Inventory = () => {
               <th>Quantity</th>
               <th>Unit</th>
               <th>Date Added</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -55,22 +56,12 @@ const Inventory = () => {
               <td>120</td>
               <td>Bags</td>
               <td>2025-10-10</td>
-            </tr>
-            <tr>
-              <th>2</th>
-              <td>Pawfect Bites Dog Kibble</td>
-              <td>Dog Food</td>
-              <td>80</td>
-              <td>Bags</td>
-              <td>2025-10-12</td>
-            </tr>
-            <tr>
-              <th>3</th>
-              <td>NutriMix Pet Treats</td>
-              <td>Pet Snacks</td>
-              <td>200</td>
-              <td>Boxes</td>
-              <td>2025-10-13</td>
+              <td>
+                <div className="inline-flex gap-2 ">
+                  <button className="bg-error rounded-sm px-4 py-1 cursor-pointer">Edit</button>
+                  <button className="bg-blue-500 rounded-sm px-4 py-1 cursor-pointer">Delete</button>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>

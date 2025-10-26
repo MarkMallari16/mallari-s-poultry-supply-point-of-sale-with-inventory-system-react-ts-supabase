@@ -48,19 +48,6 @@ const Dashboard = () => {
                     <h1>Chart 4</h1>
                 </div>
             </section>
-            {/* 
-            {loading ? (
-                <p>Loading...</p>
-            ) : (
-                <ul className="space-y-2">
-                    {products.map((product) => (
-                        <li key={product.id} className="border p-2 rounded">
-                            <strong>{product.name}</strong> — {product.brand},  <br />
-                            Price: ₱{product.price} • Stock: {product.stock} {product.unit}
-                        </li>
-                    ))}
-                </ul>
-            )} */}
         </div>
     )
 }

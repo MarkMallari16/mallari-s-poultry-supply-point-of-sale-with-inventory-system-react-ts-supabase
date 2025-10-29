@@ -1,4 +1,4 @@
-🐓 Mallari Poultry Supply POS with Inventory System
+Mallari's Poultry Supply POS with Inventory System
 
 A Point of Sale (POS) with Inventory Management System built using React + TypeScript + Vite + Supabase.
 This project is tailored for small businesses, specifically for Mallari Poultry Supply, to manage sales transactions and track inventory efficiently.

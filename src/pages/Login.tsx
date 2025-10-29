@@ -8,6 +8,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
+
     //get login store from zustand
     const login = useAuthStore((state) => state.login);
     const navigate = useNavigate();

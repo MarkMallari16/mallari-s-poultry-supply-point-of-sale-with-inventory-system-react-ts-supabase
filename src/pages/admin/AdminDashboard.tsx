@@ -1,14 +1,29 @@
 import { Box, ShoppingCart, TrendingUp, TriangleAlert } from "lucide-react";
+import { getTotalProducts } from "../../services/api/products";
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
     const overviewClasses = "flex justify-between items-center bg-white  p-5 rounded-md ring-1 ring-inset ring-gray-300"
+
+    const [totalProducts, setTotalProducts] = useState<number>();
+
+    //fetch total products eg: 3
+    const fetchTotalProducts = async () => {
+        const totalProducts = await getTotalProducts();
+        //set the 
+        setTotalProducts(totalProducts);
+    }
+    useEffect(() => {
+        fetchTotalProducts();
+    }, [])
+
     return (
         <div>
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
                 <div className={overviewClasses}>
                     <div>
                         <h3 className=" font-medium">Product</h3>
-                        <h1 className=" pt-2 text-3xl font-bold">29</h1>
+                        <h1 className=" pt-2 text-3xl font-bold">{totalProducts}</h1>
                     </div>
                     <Box className="w-10 h-10 text-gray-600" />
                 </div>

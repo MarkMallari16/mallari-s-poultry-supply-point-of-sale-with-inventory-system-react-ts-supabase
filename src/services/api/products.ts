@@ -26,3 +26,16 @@ export const getAllProducts = async (): Promise<ProductWithUrl[]> => {
         }
     })
 }
+
+export const getTotalProducts = async (): Promise<number> => {
+    const { count, error } = await supabase
+        .from("products")
+        .select("*", { count: "exact", head: true })
+
+    if (error) {
+        console.error("Error counting products: ", error.message)
+        return 0
+    }
+
+    return count || 0;
+}

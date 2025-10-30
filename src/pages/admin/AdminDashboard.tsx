@@ -10,9 +10,10 @@ const Dashboard = () => {
     //fetch total products eg: 3
     const fetchTotalProducts = async () => {
         const totalProducts = await getTotalProducts();
-        //set the 
+        //set the total products to display it
         setTotalProducts(totalProducts);
     }
+    
     useEffect(() => {
         fetchTotalProducts();
     }, [])

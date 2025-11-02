@@ -39,10 +39,8 @@ const POS = () => {
                     }
                 </div>
             </div>
-            <div className="mt-4 grid grid-cols-[1fr_30%] gap-6">
-
+            <div className="mt-4 grid grid-cols-1 lg:grid-cols-[1fr_30%] gap-6">
                 <div>
-
                     {/* <div className="mb-4 bg-white p-4 rounded-md border border-gray-300">
                         <label htmlFor="productSearch" className="text-gray-500">Search product</label>
                         <input type="text" id="productSearch" placeholder="Search Product Here..." className="input w-full " />

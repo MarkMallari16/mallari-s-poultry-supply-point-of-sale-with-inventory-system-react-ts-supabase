@@ -11,6 +11,7 @@ const Login = () => {
 
     //get login store from zustand
     const login = useAuthStore((state) => state.login);
+    //for navigation
     const navigate = useNavigate();
 
     //login user

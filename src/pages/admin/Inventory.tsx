@@ -63,11 +63,9 @@ const Inventory = () => {
                 <button className="btn">Cancel</button>
               </form>
               <button className="btn btn-error">
-                Confirm Reset
+                Reset
               </button>
             </div>
-
-            
           </div>
         </dialog>
       </div>

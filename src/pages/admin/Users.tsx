@@ -9,7 +9,6 @@ const Users = () => {
             <div>
                 <div className="mt-6 overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
                     <table className="table">
-                        {/* head */}
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -20,7 +19,6 @@ const Users = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* row 2 data */}
                             <tr>
                                 <th>2</th>
                                 <td>Jobert</td>

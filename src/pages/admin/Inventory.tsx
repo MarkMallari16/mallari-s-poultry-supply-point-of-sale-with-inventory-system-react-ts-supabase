@@ -8,6 +8,7 @@ const Inventory = () => {
   const [formData, setFormData] = useState({ name: "", price: "", stock: "" })
 
 
+  //open modal
   const openModal = (selectedMode: "add" | "update", data?: any) => {
     setMode(selectedMode)
 
@@ -20,7 +21,7 @@ const Inventory = () => {
     modalRef.current?.showModal();
   }
 
-
+  //open delete modal
   const openDeleteModal = () => {
     if (deleteModalRef?.current) {
       deleteModalRef.current.showModal();

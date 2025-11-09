@@ -46,7 +46,10 @@ const Inventory = () => {
 
             <div className="modal-action">
               <form method="dialog">
-                <button className="btn">Close</button>
+                <div className="flex gap-2">
+                  <button className="btn">Close</button>
+                  <button className="btn btn-info">Update</button>
+                </div>
               </form>
             </div>
           </div>
@@ -93,10 +96,10 @@ const Inventory = () => {
               <td>2025-10-10</td>
               <td>
                 <div className="inline-flex gap-1 font-medium">
-                  <button onClick={() => openModal("update")} className="bg-blue-400 rounded-sm px-4 py-2 cursor-pointer">
+                  <button onClick={() => openModal("update")} className="btn btn-info rounded-sm px-4 py-2 cursor-pointer">
                     <Box className="size-5" />
                   </button>
-                  <button onClick={openDeleteModal} className="bg-error rounded-sm px-4 py-2 cursor-pointer">
+                  <button onClick={openDeleteModal} className="btn btn-error rounded-sm px-4 py-2 cursor-pointer">
                     <RefreshCcw className="size-5" />
                   </button>
                 </div>

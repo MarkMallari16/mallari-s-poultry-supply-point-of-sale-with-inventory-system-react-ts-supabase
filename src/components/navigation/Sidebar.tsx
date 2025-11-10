@@ -1,5 +1,5 @@
 
-import { Box, ChartColumn, House, LogOut, Receipt, ShoppingCart, User } from "lucide-react";
+import { ChartColumn, House, LogOut, Receipt, ReceiptText, ShoppingCart, Tags, User, Warehouse } from "lucide-react";
 import { NavLink } from "react-router";
 import { useAuthStore } from "../../stores/useAuthStore";
 import { useSidebarStore } from "../../stores/useSidebarStore";
@@ -44,11 +44,19 @@ const Sidebar = ({ role }: RoleProps) => {
                 <p className={sidebarTextClass}>Dashboard</p>
               </NavLink>
               <NavLink to="/admin/pos" caseSensitive className={navClass}>
-                <ShoppingCart className={iconClass} />
+                <svg xmlns="http://www.w3.org/2000/svg" className={iconClass} viewBox="0 -960 960 960" width="24px" fill="oklch(55.1% 0.027 264.364)"><path d="M280-640q-33 0-56.5-23.5T200-720v-80q0-33 23.5-56.5T280-880h400q33 0 56.5 23.5T760-800v80q0 33-23.5 56.5T680-640H280Zm0-80h400v-80H280v80ZM160-80q-33 0-56.5-23.5T80-160v-40h800v40q0 33-23.5 56.5T800-80H160ZM80-240l139-313q10-22 30-34.5t43-12.5h376q23 0 43 12.5t30 34.5l139 313H80Zm260-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm120 160h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm120 160h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Z" /></svg>
                 <p className={sidebarTextClass}>Point of Sale</p>
               </NavLink>
+              <NavLink to="/admin/category" caseSensitive className={navClass}>
+                <Tags className={iconClass} />
+                <p className={sidebarTextClass}>Category</p>
+              </NavLink>
+              <NavLink to="/admin/products" caseSensitive className={navClass}>
+                <ShoppingCart className={iconClass} />
+                <p className={sidebarTextClass}>Products</p>
+              </NavLink>
               <NavLink to="/admin/inventory" caseSensitive className={navClass}>
-                <Box className={iconClass} />
+                <Warehouse className={iconClass} />
                 <p className={sidebarTextClass}>Inventory</p>
               </NavLink>
               <NavLink to="/admin/sales-history" caseSensitive className={navClass}>
@@ -85,7 +93,7 @@ const Sidebar = ({ role }: RoleProps) => {
             </>
           }
         </div>
-      </div>
+      </div >
 
       <div className={`${isSidebarOpen ? "mx-2 gap-2 justify-between " : "-mx-1"} flex items-center p-2 rounded-md mb-4 transition-all duration-300 text-nowrap`}>
         <div className="flex items-center gap-2">
@@ -105,7 +113,7 @@ const Sidebar = ({ role }: RoleProps) => {
           </button>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 

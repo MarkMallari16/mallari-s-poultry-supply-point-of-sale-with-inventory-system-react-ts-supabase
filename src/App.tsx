@@ -11,6 +11,8 @@ import Inventory from './pages/admin/Inventory';
 import SalesHistory from './pages/admin/SalesHistory';
 import Analytics from './pages/admin/Analytics';
 import Users from './pages/admin/Users';
+import Category from './pages/admin/Category';
+import Products from './pages/admin/Products';
 
 function App() {
 
@@ -30,6 +32,8 @@ function App() {
           >
             <Route path='dashboard' element={<AdminDashboard />} />
             <Route path='pos' element={<POS />} />
+            <Route path='category' element={<Category />}/>
+            <Route path='products' element={<Products />}/>
             <Route path='inventory' element={<Inventory />} />
             <Route path='sales-history' element={<SalesHistory />} />
             <Route path='analytics' element={<Analytics />} />

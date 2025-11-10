@@ -9,14 +9,16 @@ export const usePageTitle = () => {
 
     const commonTitles: Record<string, string> = {
         "/dashboard": "Dashboard",
-        "/pos": "POS",
+        "/pos": "Point of Sale",
         "/analytics": "Analytics",
         "/sales-history": "Sales History"
     }
 
     const adminTitles: Record<string, string> = {
         "/inventory": "Inventory",
-        "/users": "Users"
+        "/users": "Users",
+        "/category" : "Category",
+        "/products" : "Products"
     }
 
     const basePath = `/${role}`;

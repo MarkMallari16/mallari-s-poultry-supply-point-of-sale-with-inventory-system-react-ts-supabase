@@ -3,4 +3,5 @@ export interface User {
     email: string;
     full_name?: string;
     role?: "admin" | "cashier";
+    is_active?: string;
 }

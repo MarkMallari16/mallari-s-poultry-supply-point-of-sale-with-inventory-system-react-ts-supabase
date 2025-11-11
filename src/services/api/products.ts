@@ -39,3 +39,19 @@ export const getTotalProducts = async (): Promise<number> => {
 
     return count || 0;
 }
+
+export const updateStocks = async (productId: number, newStock: number) => {
+    const { data, error } = await supabase
+        .from("products")
+        .update({ stock: newStock })
+        .eq("id", productId)
+        .select();
+
+    if (error) {
+        console.error("Error updating stock:", error.message);
+
+        return null;
+    }
+
+    return data;
+}

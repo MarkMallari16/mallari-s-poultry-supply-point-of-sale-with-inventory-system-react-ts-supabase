@@ -1,12 +1,48 @@
 import { Box, Plus, RefreshCcw } from "lucide-react"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { getAllProducts, updateStocks } from "../../services/api/products"
+import type { Product } from "../../types/product"
 
 const Inventory = () => {
   const modalRef = useRef<HTMLDialogElement>(null)
   const deleteModalRef = useRef<HTMLDialogElement>(null)
   const [mode, setMode] = useState<"add" | "update">("add");
-  const [formData, setFormData] = useState({ name: "", price: "", stock: "" })
+  const [formData, setFormData] = useState({ id: "", stock: "" })
+  const [loading, setLoading] = useState<boolean>(false);
+  const [products, setProducts] = useState<Product[]>();
 
+  const fetchProducts = async () => {
+    const results = await getAllProducts();
+    setProducts(results);
+  }
+
+  useEffect(() => {
+    fetchProducts();
+  }, [])
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  }
+
+  //this will handle update
+  const handleUpdate = async () => {
+    if (!formData.stock) return alert("Please enter stock quantity");
+
+    setLoading(true);
+
+    const updated = await updateStocks(Number(formData.id), Number(formData.stock));
+
+
+    if (updated) {
+      alert("Stock updated successfully!")
+      modalRef.current?.close();
+      setFormData({ id: "", stock: "" });
+      await fetchProducts();
+    } else {
+      alert("Failed to update stock.");
+    }
+    setLoading(false);
+  }
 
   //open modal
   const openModal = (selectedMode: "add" | "update", data?: any) => {
@@ -15,7 +51,7 @@ const Inventory = () => {
     if (selectedMode === "update" && data) {
       setFormData(data);
     } else {
-      setFormData({ name: "", price: "", stock: "" });
+      setFormData({ id: "", stock: "" });
     }
 
     modalRef.current?.showModal();
@@ -42,15 +78,17 @@ const Inventory = () => {
           <div className="modal-box">
             <h3 className="font-bold text-lg mb-2">{mode == "add" ? "Add Product" : "Update Stock"}</h3>
             <label htmlFor="productName">Product Quantity:</label>
-            <input type="text" className="mt-1 block input w-full" />
-
+            <input type="text"
+              className="mt-1 block input w-full"
+              name="stock"
+              value={formData.stock} onChange={handleInputChange}
+              placeholder="Update stock amount (e.g. 75)"
+              disabled={loading} />
             <div className="modal-action">
-              <form method="dialog">
-                <div className="flex gap-2">
-                  <button className="btn">Close</button>
-                  <button className="btn btn-info">Update</button>
-                </div>
-              </form>
+              <div className="flex gap-2">
+                <button className="btn" onClick={() => modalRef.current?.close()}>Close</button>
+                <button className="btn btn-info" onClick={handleUpdate}>{loading ? "Updating..." : "Update"}</button>
+              </div>
             </div>
           </div>
         </dialog>
@@ -77,34 +115,34 @@ const Inventory = () => {
         <table className="table">
           <thead>
             <tr>
-              <th></th>
+              <th>Product ID</th>
               <th>Product Name</th>
               <th>Category</th>
-              <th>Quantity</th>
-              <th>Unit</th>
+              <th>Stock</th>
               <th>Date Added</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th>1</th>
-              <td>Whisker Delight Cat Food</td>
-              <td>Cat Food</td>
-              <td>120</td>
-              <td>Bags</td>
-              <td>2025-10-10</td>
-              <td>
-                <div className="inline-flex gap-1 font-medium">
-                  <button onClick={() => openModal("update")} className="btn btn-info rounded-sm px-4 py-2 cursor-pointer">
-                    <Box className="size-5" />
-                  </button>
-                  <button onClick={openDeleteModal} className="btn btn-error rounded-sm px-4 py-2 cursor-pointer">
-                    <RefreshCcw className="size-5" />
-                  </button>
-                </div>
-              </td>
-            </tr>
+            {products?.map(product => (
+              <tr key={product.id}>
+                <th>{product.id}</th>
+                <td>{product.name}</td>
+                <td>{product.brand}</td>
+                <td>{product.stock}</td>
+                <td>{product.created_at}</td>
+                <td>
+                  <div className="inline-flex gap-1 font-medium">
+                    <button onClick={() => openModal("update", product)} className="btn btn-info rounded-sm px-4 py-2 cursor-pointer">
+                      <Box className="size-5" />
+                    </button>
+                    <button onClick={openDeleteModal} className="btn btn-error rounded-sm px-4 py-2 cursor-pointer">
+                      <RefreshCcw className="size-5" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

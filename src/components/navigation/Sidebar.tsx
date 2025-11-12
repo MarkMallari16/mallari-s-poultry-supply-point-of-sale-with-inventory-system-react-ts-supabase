@@ -1,5 +1,5 @@
 
-import { ChartColumn, House, LogOut, Receipt, ReceiptText, ShoppingCart, Tags, User, Warehouse } from "lucide-react";
+import { ChartColumn, House, LogOut, Receipt, ShoppingCart, Tags, User, Warehouse } from "lucide-react";
 import { NavLink } from "react-router";
 import { useAuthStore } from "../../stores/useAuthStore";
 import { useSidebarStore } from "../../stores/useSidebarStore";

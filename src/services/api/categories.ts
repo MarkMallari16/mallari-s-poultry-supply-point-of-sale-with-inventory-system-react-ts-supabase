@@ -14,3 +14,22 @@ export const getAllCategories = async (): Promise<Category[]> => {
 
     return data as Category[];
 }
+''
+export const deleteCategory = async (id: number): Promise<boolean> => {
+    try {
+        const { error } = await supabase
+            .from("categories")
+            .delete()
+            .eq("id", id);
+
+        if (error) {
+            console.error("Error deleting product:", error.message);
+            return false;
+        }
+
+        return true;
+    } catch (err) {
+        console.error("Unexpected error deleting product:", err);
+        return false;
+    }
+}

@@ -14,3 +14,21 @@ export const getAllUsers = async (): Promise<User[]> => {
 
     return data;
 }
+export const deleteUserById = async (id: string) => {
+    try {
+        const { error } = await supabase
+            .from("users")
+            .delete()
+            .eq("id", id);
+
+        if (error) {
+            console.error("Delete user error:", error.message);
+            return false;
+        }
+
+        return true;
+    } catch (err) {
+        console.error("Unexpected error deleting product:", err);
+        return false;
+    }
+}

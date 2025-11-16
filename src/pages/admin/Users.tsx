@@ -119,7 +119,7 @@ const Users = () => {
             </dialog>
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-xl font-bold">Staff</h1>
+                    <h1 className="text-2xl font-bold">Staff</h1>
                     <span className="text-gray-500">Manage your staff members.</span>
                 </div>
 

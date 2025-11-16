@@ -67,13 +67,9 @@ const Inventory = () => {
     <>
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-xl font-bold">Inventory Management</h1>
+          <h1 className="text-2xl font-bold">Inventory Management</h1>
           <span className="text-gray-500">Manage your product catalog</span>
         </div>
-        <button onClick={() => openModal("add")} className="btn btn-success">
-          <Plus className="size-4" />
-          Add new product
-        </button>
         <dialog ref={modalRef} className="modal">
           <div className="modal-box">
             <h3 className="font-bold text-lg mb-2">{mode == "add" ? "Add Product" : "Update Stock"}</h3>

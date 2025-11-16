@@ -2,7 +2,8 @@
 const Category = () => {
   return (
     <div>
-        <h3 className="text-2xl font-bold">Manage your category</h3>
+      <h3 className="text-2xl font-bold">Categories</h3>
+      <p className="text-gray-500">Manage all product categories.</p>
     </div>
   )
 }

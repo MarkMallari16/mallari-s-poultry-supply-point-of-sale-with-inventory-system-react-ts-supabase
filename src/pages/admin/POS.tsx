@@ -64,7 +64,6 @@ const POS = () => {
                                 <div className="w-20 object-cover">
                                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsGuYEGUgBZKz49g4JeSB-at0vRjW-B_sgLg&s" alt="product" />
                                 </div>
-
                                 <div className="w-full">
                                     <h3 className="text-lg font-medium">Product Name</h3>
                                     <p className="text-md">Category</p>
@@ -80,14 +79,11 @@ const POS = () => {
                                                 <Plus className="size-4" />
                                             </button>
                                         </div>
-
-
                                     </div>
                                     <div className="flex justify-end pt-4 ">
                                         <h2 className="text-end  text-emerald-500 font-bold">$82</h2>
                                     </div>
                                 </div>
-
                             </div>
                             <div className="bg-gray-100 p-5 rounded-sm flex w-full gap-5 mt-4">
                                 <div className="w-20 object-cover">
@@ -109,7 +105,6 @@ const POS = () => {
                                                 <Plus className="size-4" />
                                             </button>
                                         </div>
-
                                     </div>
                                     <div className="flex justify-end pt-4 ">
                                         <h2 className="text-end  text-emerald-500 font-bold">$82</h2>
@@ -137,14 +132,11 @@ const POS = () => {
                                                 <Plus className="size-4" />
                                             </button>
                                         </div>
-
-
                                     </div>
                                     <div className="flex justify-end pt-4 ">
                                         <h2 className="text-end  text-emerald-500 font-bold">$82</h2>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <div className="flex items-center justify-between mt-4">

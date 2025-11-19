@@ -1,5 +1,5 @@
 
-import { ChartColumn, House, LogOut, Receipt, ShoppingCart, Tags, User, Warehouse } from "lucide-react";
+import { Box, ChartColumn, House, LogOut, Receipt, ShoppingCart, Tags, User, Warehouse } from "lucide-react";
 import { NavLink } from "react-router";
 import { useAuthStore } from "../../stores/useAuthStore";
 import { useSidebarStore } from "../../stores/useSidebarStore";
@@ -52,7 +52,7 @@ const Sidebar = ({ role }: RoleProps) => {
                 <p className={sidebarTextClass}>Category</p>
               </NavLink>
               <NavLink to="/admin/products" caseSensitive className={navClass}>
-                <ShoppingCart className={iconClass} />
+                <Box className={iconClass} />
                 <p className={sidebarTextClass}>Products</p>
               </NavLink>
               <NavLink to="/admin/inventory" caseSensitive className={navClass}>

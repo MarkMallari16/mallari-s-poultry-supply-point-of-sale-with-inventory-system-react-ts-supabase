@@ -94,7 +94,6 @@ const Sidebar = ({ role }: RoleProps) => {
           }
         </div>
       </div >
-
       <div className={`${isSidebarOpen ? "mx-2 gap-2 justify-between " : "-mx-1"} flex items-center p-2 rounded-md mb-4 transition-all duration-300 text-nowrap`}>
         <div className="flex items-center gap-2">
           <div className={`${sidebarTextClass} avatar transition-all duration-300 delay-75`}>

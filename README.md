@@ -4,13 +4,9 @@ A Point of Sale (POS) with Inventory Management System built using React + TypeS
 This project is tailored for small businesses, specifically for Mallari Poultry Supply, to manage sales transactions and track inventory efficiently.
 
 🚀 Tech Stack
-
 ⚛️ React + TypeScript 
-
 ⚡ Vite 
-
 🗄️ Supabase
-
 🎨 TailwindCSS / DaisyUI
 
 ✨ Features

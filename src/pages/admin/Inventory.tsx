@@ -43,7 +43,7 @@ const Inventory = () => {
     }
     setLoading(false);
   }
-
+  
   //open modal
   const openModal = (selectedMode: "add" | "update", data?: any) => {
     setMode(selectedMode)

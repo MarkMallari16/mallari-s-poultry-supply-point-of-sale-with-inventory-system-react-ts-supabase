@@ -43,7 +43,7 @@ const Inventory = () => {
     }
     setLoading(false);
   }
-  
+
   //open modal
   const openModal = (selectedMode: "add" | "update", data?: any) => {
     setMode(selectedMode)
@@ -126,7 +126,7 @@ const Inventory = () => {
                 <td>{product.name}</td>
                 <td>{product.brand}</td>
                 <td>{product.stock}</td>
-                <td>{product.created_at}</td>
+                <td>{new Date(product.created_at).toLocaleDateString("en-PH")}</td>
                 <td>
                   <div className="inline-flex gap-1 font-medium">
                     <button onClick={() => openModal("update", product)} className="btn btn-info rounded-sm px-4 py-2 cursor-pointer">

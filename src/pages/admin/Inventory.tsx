@@ -1,6 +1,6 @@
 import { Box, Plus, RefreshCcw } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
-import { getAllProducts, updateStocks } from "../../services/api/products"
+import { getAllProducts, resetAllStocks, updateStocks } from "../../services/api/products"
 import type { Product } from "../../types/product"
 
 const Inventory = () => {
@@ -10,6 +10,7 @@ const Inventory = () => {
   const [formData, setFormData] = useState({ id: "", stock: "" })
   const [loading, setLoading] = useState<boolean>(false);
   const [products, setProducts] = useState<Product[]>();
+  const [productId, setProductId] = useState<number>(0);
 
   const fetchProducts = async () => {
     const results = await getAllProducts();
@@ -44,6 +45,22 @@ const Inventory = () => {
     setLoading(false);
   }
 
+  const handleResetStock = async () => {
+    setLoading(true);
+
+    const updated = await resetAllStocks(productId);
+
+    if (updated) {
+      alert("Stock reset successfully!")
+      deleteModalRef.current?.close();
+      await fetchProducts();
+    } else {
+      alert("Failed to update stock.")
+    }
+
+    setLoading(false);
+  }
+
   //open modal
   const openModal = (selectedMode: "add" | "update", data?: any) => {
     setMode(selectedMode)
@@ -58,9 +75,11 @@ const Inventory = () => {
   }
 
   //open delete modal
-  const openDeleteModal = () => {
+  const openDeleteModal = (currentId: number) => {
     if (deleteModalRef?.current) {
+      setProductId(currentId);
       deleteModalRef.current.showModal();
+
     }
   }
   return (
@@ -97,10 +116,8 @@ const Inventory = () => {
             </p>
 
             <div className="modal-action ">
-              <form method="dialog">
-                <button className="btn">Cancel</button>
-              </form>
-              <button className="btn btn-error">
+              <button className="btn" onClick={() => deleteModalRef.current?.close()}>Cancel</button>
+              <button className="btn btn-error" onClick={handleResetStock}>
                 Reset
               </button>
             </div>
@@ -132,7 +149,7 @@ const Inventory = () => {
                     <button onClick={() => openModal("update", product)} className="btn btn-info rounded-sm px-4 py-2 cursor-pointer">
                       <Box className="size-5" />
                     </button>
-                    <button onClick={openDeleteModal} className="btn btn-error rounded-sm px-4 py-2 cursor-pointer">
+                    <button onClick={() => openDeleteModal(product.id)} className="btn btn-error rounded-sm px-4 py-2 cursor-pointer">
                       <RefreshCcw className="size-5" />
                     </button>
                   </div>

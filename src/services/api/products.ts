@@ -120,3 +120,19 @@ export const updateStocks = async (productId: number, newStock: number) => {
 
     return data;
 }
+
+export const resetAllStocks = async (productId: number) => {
+    const { data, error } = await supabase
+        .from("products")
+        .update({ stock: 0 })
+        .eq("id", productId)
+        .select();
+
+    if (error) {
+        console.error("Error updating stock: ", error.message);
+
+        return null;
+    }
+
+    return data;
+}

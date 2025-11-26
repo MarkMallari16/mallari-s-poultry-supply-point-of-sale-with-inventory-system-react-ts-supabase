@@ -121,7 +121,6 @@ const Users = () => {
                         </select>
                     </div>
 
-
                     <div className="modal-action">
                         <div className="flex gap-2">
                             <button className="btn" onClick={() => modalRef.current?.close()}>Close</button>

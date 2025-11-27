@@ -136,3 +136,35 @@ export const resetAllStocks = async (productId: number) => {
 
     return data;
 }
+
+export const updateProduct = async (
+    id: number,
+    updates: Partial<Omit<ProductWithUrl, "id" | "publicUrl">>
+): Promise<ProductWithUrl | null> => {
+    try {
+        const { data, error } = await supabase
+            .from("products")
+            .update(updates)
+            .eq("id", id)
+            .select()
+            .single();
+
+        if (error || !data) {
+            console.error("Error updating product:", error?.message);
+            return null;
+        }
+
+        let publicUrl = "";
+        if (data.image_url) {
+            const { data: imageData } = supabase.storage
+                .from("product-images")
+                .getPublicUrl(data.image_url);
+            publicUrl = imageData.publicUrl;
+        }
+
+        return { ...data, publicUrl };
+    } catch (err) {
+        console.error("Unexpected error updating product:", err);
+        return null;
+    }
+}

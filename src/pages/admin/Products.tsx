@@ -212,7 +212,6 @@ const Products = () => {
                                 <th>{product.id}</th>
                                 <td className="flex items-center gap-2">
                                     {product.publicUrl ? (
-                                        // eslint-disable-next-line @next/next/no-img-element
                                         <img src={product.publicUrl} alt={product.name} className="w-8 h-8 object-cover rounded" />
                                     ) : null}
                                     {product.name}

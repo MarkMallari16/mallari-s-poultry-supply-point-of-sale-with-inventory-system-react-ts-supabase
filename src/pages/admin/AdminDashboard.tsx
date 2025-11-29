@@ -2,6 +2,9 @@ import { Box, ShoppingCart, TrendingUp, TriangleAlert } from "lucide-react";
 import { getTotalProducts } from "../../services/api/products";
 import { useEffect, useState } from "react";
 import BarChart from "../../components/charts/BarChart";
+import LineChart from "../../components/charts/LineChart";
+import PieChart from "../../components/charts/PieChart";
+import DoughnutChart from "../../components/charts/DoughnutChart";
 
 const Dashboard = () => {
     const overviewClasses = "flex justify-between items-center bg-white  p-5 rounded-md ring-1 ring-inset ring-gray-300"
@@ -56,13 +59,13 @@ const Dashboard = () => {
                     <BarChart />
                 </div>
                 <div className="bg-white  p-5 rounded-md ring-1 ring-inset ring-gray-300">
-                    <h1>Chart 2</h1>
+                    <LineChart />
                 </div>
                 <div className="bg-white  p-5 rounded-md ring-1 ring-inset ring-gray-300">
-                    <h1>Chart 3</h1>
+                    <PieChart />
                 </div>
                 <div className="bg-white  p-5 rounded-md ring-1 ring-inset ring-gray-300">
-                    <h1>Chart 4</h1>
+                    <DoughnutChart />
                 </div>
             </section>
         </div>

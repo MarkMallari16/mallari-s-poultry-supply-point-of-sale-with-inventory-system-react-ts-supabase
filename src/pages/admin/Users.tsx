@@ -101,7 +101,6 @@ const Users = () => {
                             onChange={handleInputChange}
                         />
                     </div>
-
                     <div className="mt-1">
                         <label htmlFor="productName">Email</label>
                         <input type="email"
@@ -111,7 +110,6 @@ const Users = () => {
                             onChange={handleInputChange}
                         />
                     </div>
-
                     <div className="mt-1">
                         <label htmlFor="productName">Role</label>
                         <select value={formData.role} onChange={handleInputChange} className="select block w-full">
@@ -120,7 +118,6 @@ const Users = () => {
                             <option value="admin">Admin</option>
                         </select>
                     </div>
-
                     <div className="modal-action">
                         <div className="flex gap-2">
                             <button className="btn" onClick={() => modalRef.current?.close()}>Close</button>

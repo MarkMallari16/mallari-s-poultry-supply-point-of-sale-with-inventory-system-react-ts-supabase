@@ -1,6 +1,6 @@
 import type { User } from "../../types/user";
 import { useEffect, useRef, useState } from "react"
-import { deleteUserById, getAllUsers } from "../../services/api/users";
+import { deleteUserById, getAllUsers, updateUserById } from "../../services/api/users";
 
 const Users = () => {
     const [users, setUsers] = useState<User[]>();
@@ -27,8 +27,10 @@ const Users = () => {
 
     useEffect(() => {
         const fetchUsers = async () => {
+            setLoading(true);
             const data = await getAllUsers();
             setUsers(data);
+            setLoading(false);
         }
         fetchUsers();
     }, [])
@@ -37,12 +39,25 @@ const Users = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
 
-    const handleAddModal = () => {
+    const handleAddModal = () => { }
 
-    }
-
-    const handleUpdateModal = () => {
-
+    const handleUpdateModal = async () => {
+        try {
+            setLoading(true);
+            const updated = await updateUserById(formData.id, {
+                full_name: formData.fullName,
+                email: formData.email,
+                role: formData.role as any,
+                is_active: formData.isActive as any
+            });
+            if (updated) {
+                modalRef.current?.close();
+                const data = await getAllUsers();
+                setUsers(data);
+            }
+        } finally {
+            setLoading(false);
+        }
     }
 
     const handleDeleteModal = async () => {
@@ -91,7 +106,7 @@ const Users = () => {
         <>
             <dialog ref={modalRef} className="modal">
                 <div className="modal-box">
-                    <h3 className="font-bold text-lg mb-4">Add staff</h3>
+                    <h3 className="font-bold text-lg mb-4">{mode === "add" ? "Add staff" : "Update staff"}</h3>
                     <div className="">
                         <label htmlFor="productName">Full Name</label>
                         <input type="text"
@@ -112,16 +127,24 @@ const Users = () => {
                     </div>
                     <div className="mt-1">
                         <label htmlFor="productName">Role</label>
-                        <select value={formData.role} onChange={handleInputChange} className="select block w-full">
+                        <select name="role" value={formData.role} onChange={handleInputChange} className="select block w-full">
                             <option disabled={true} value="">Select Role</option>
                             <option value="cashier">Cashier</option>
                             <option value="admin">Admin</option>
                         </select>
                     </div>
+                    <div className="mt-2 flex items-center gap-2">
+                        <input type="checkbox" id="is_active" className="toggle" checked={formData.isActive} onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })} />
+                        <label htmlFor="is_active">Active</label>
+                    </div>
                     <div className="modal-action">
                         <div className="flex gap-2">
                             <button className="btn" onClick={() => modalRef.current?.close()}>Close</button>
-                            <button className="btn bg-emerald-500" onClick={handleAddModal}>Add</button>
+                            {mode === "add" ? (
+                                <button className="btn bg-emerald-500" onClick={handleAddModal}>Add</button>
+                            ) : (
+                                <button className="btn btn-info" onClick={handleUpdateModal} disabled={loading}>Update</button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -180,7 +203,7 @@ const Users = () => {
                                         <td className="font-medium">{user.is_active ? "Active" : "Inactive"}</td>
                                         <td>
                                             <div className="flex gap-1">
-                                                <button className="btn btn-info px-4 py-2" onClick={() => openModal("update")}>
+                                                <button className="btn btn-info px-4 py-2" onClick={() => openModal("update", user)}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                                     </svg>

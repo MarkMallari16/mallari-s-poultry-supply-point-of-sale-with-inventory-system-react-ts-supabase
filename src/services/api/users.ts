@@ -32,3 +32,27 @@ export const deleteUserById = async (id: string) => {
         return false;
     }
 }
+
+export const updateUserById = async (
+    id: string,
+    updates: Partial<Pick<User, "email" | "full_name" | "role" | "is_active">>
+): Promise<User | null> => {
+    try {
+        const { data, error } = await supabase
+            .from("users")
+            .update(updates)
+            .eq("id", id)
+            .select("*")
+            .single();
+
+        if (error || !data) {
+            console.error("Update user error:", error?.message);
+            return null;
+        }
+
+        return data as User;
+    } catch (err) {
+        console.error("Unexpected error updating user:", err);
+        return null;
+    }
+}

@@ -14,7 +14,28 @@ export const getAllCategories = async (): Promise<Category[]> => {
 
     return data as Category[];
 }
-''
+
+export const addCategory = async (
+    category: Pick<Category, "name" | "species">
+): Promise<Category | null> => {
+    try {
+        const { data, error } = await supabase
+            .from("categories")
+            .insert([category])
+            .select("*")
+            .single();
+
+        if (error || !data) {
+            console.error("Error adding category:", error?.message);
+            return null;
+        }
+
+        return data as Category;
+    } catch (err) {
+        console.error("Unexpected error adding category:", err);
+        return null;
+    }
+}
 export const deleteCategory = async (id: number): Promise<boolean> => {
     try {
         const { error } = await supabase
@@ -31,5 +52,29 @@ export const deleteCategory = async (id: number): Promise<boolean> => {
     } catch (err) {
         console.error("Unexpected error deleting product:", err);
         return false;
+    }
+}
+
+export const updateCategory = async (
+    id: number,
+    updates: Partial<Pick<Category, "name" | "species">>
+): Promise<Category | null> => {
+    try {
+        const { data, error } = await supabase
+            .from("categories")
+            .update(updates)
+            .eq("id", id)
+            .select("*")
+            .single();
+
+        if (error || !data) {
+            console.error("Error updating category:", error?.message);
+            return null;
+        }
+
+        return data as Category;
+    } catch (err) {
+        console.error("Unexpected error updating category:", err);
+        return null;
     }
 }

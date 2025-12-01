@@ -63,8 +63,10 @@ const Category = () => {
 
   const confirmDelete = async () => {
     if (!selected) return;
+
     setLoading(true);
     const ok = await deleteCategory(selected.id);
+
     if (ok) {
       await refresh();
       deleteModalRef.current?.close();

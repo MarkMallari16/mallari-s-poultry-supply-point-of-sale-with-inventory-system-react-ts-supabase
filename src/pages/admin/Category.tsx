@@ -113,7 +113,6 @@ const Category = () => {
           </tbody>
         </table>
       </div>
-
       <dialog ref={modalRef} className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg mb-2">{mode === "add" ? "Add Category" : "Update Category"}</h3>
@@ -147,7 +146,6 @@ const Category = () => {
           </div>
         </div>
       </dialog>
-
       <dialog ref={deleteModalRef} className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Delete Category</h3>

@@ -83,7 +83,6 @@ const Category = () => {
         </div>
         <button className="btn bg-emerald-500" onClick={() => openModal("add")}>Add Category</button>
       </div>
-
       <div className="mt-4 overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
         <table className="table">
           <thead>

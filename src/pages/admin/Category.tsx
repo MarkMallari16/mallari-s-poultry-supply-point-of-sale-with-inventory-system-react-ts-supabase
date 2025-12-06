@@ -122,6 +122,7 @@ const Category = () => {
                 type="text"
                 className="input input-bordered w-full"
                 value={formData.name}
+                placeholder="Enter category name"
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 disabled={loading}
               />
@@ -132,6 +133,7 @@ const Category = () => {
                 type="text"
                 className="input input-bordered w-full"
                 value={formData.species}
+                placeholder="Enter species name"
                 onChange={(e) => setFormData({ ...formData, species: e.target.value })}
                 disabled={loading}
               />

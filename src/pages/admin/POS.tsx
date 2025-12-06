@@ -85,21 +85,18 @@ const POS = () => {
                                     </div>
                                 </div>
                             </div>
-                           
+
                         </div>
                         <div className="flex items-center justify-between mt-4">
                             <h3 className="font-medium text-xl">Total</h3>
                             <h1 className="text-2xl font-bold text-emerald-500">₱100</h1>
                         </div>
                         <div>
-                            <button className="btn btn-success w-full mt-4">
+                            <button className="btn btn-success font-bold w-full mt-4">
                                 <Banknote />
-                                Pay Cash
+                                CHECKOUT
                             </button>
-                            <button className="btn btn- w-full mt-3">
-                                <img src={GcashLogo} alt="Gcash Logo" className="w-6" />
-                                GCash
-                            </button>
+                          
                         </div>
                     </div>
                 </div>

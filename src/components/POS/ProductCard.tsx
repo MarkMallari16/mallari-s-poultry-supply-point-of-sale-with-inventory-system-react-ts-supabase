@@ -1,4 +1,5 @@
 import { PawPrint } from "lucide-react";
+import { useCartStore } from "../../stores/useCartStore";
 
 interface Product {
     id: number;
@@ -10,6 +11,7 @@ interface ProductCardProps {
     product: Product;
 }
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+    const addToCart = useCartStore((s) => s.addToCart);
     return (
         <div key={product.id} className="flex flex-col justify-between card bg-base-100 w-full shadow-sm cursor-pointer">
             <figure className="h-60 object-cover overflow-hidden flex items-center justify-center bg-gray-100">
@@ -22,7 +24,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 <h2 className="card-title font-bold text-xl">{product.name}</h2>
                 <p className="font-bold text-lg">₱{product.price}</p>
                 <div className="card-actions justify-end">
-                    <button className="btn btn-success w-full">Add to Cart</button>
+                    <button className="btn btn-success w-full" onClick={() => addToCart(product as any)}>Add to Cart</button>
                 </div>
             </div>
         </div>

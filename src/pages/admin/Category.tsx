@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Category as CategoryType } from "../../types/categories";
 import { addCategory, deleteCategory, getAllCategories, updateCategory } from "../../services/api/categories";
+import { Edit, Trash2 } from "lucide-react";
 
 const Category = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -76,12 +77,18 @@ const Category = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
         <div>
           <h3 className="text-2xl font-bold">Categories</h3>
           <p className="text-gray-500">Manage all product categories.</p>
         </div>
-        <button className="btn bg-emerald-500" onClick={() => openModal("add")}>Add Category</button>
+
+        <button className="btn bg-emerald-500 w-full sm:w-auto" onClick={() => openModal("add")}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          Add Category
+        </button>
       </div>
       <div className="mt-4 overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
         <table className="table">
@@ -103,8 +110,8 @@ const Category = () => {
                 <td>{new Date(c.created_at).toLocaleDateString("en-PH")}</td>
                 <td>
                   <div className="inline-flex gap-1">
-                    <button className="btn btn-info" onClick={() => openModal("update", c)}>Edit</button>
-                    <button className="btn btn-error" onClick={() => openDelete(c)}>Delete</button>
+                    <button className="btn btn-info" onClick={() => openModal("update", c)}> <Edit className="size-5" /></button>
+                    <button className="btn btn-error" onClick={() => openDelete(c)}><Trash2 className="size-5" /></button>
                   </div>
                 </td>
               </tr>

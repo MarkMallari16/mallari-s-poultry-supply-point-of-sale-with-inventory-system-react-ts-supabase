@@ -1,22 +1,35 @@
 import { useEffect, useRef, useState } from "react"
 import type { Product, ProductWithUrl } from "../../types/product";
-import { Box, RefreshCcw } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { addProduct, deleteProduct, getAllProducts, updateProduct } from "../../services/api/products";
 import { supabase } from "../../services/supabaseClient";
+import { getAllCategories } from "../../services/api/categories";
+import type { Category } from "../../types/categories";
 
 const Products = () => {
     const modalRef = useRef<HTMLDialogElement>(null);
     const deleteModalRef = useRef<HTMLDialogElement>(null);
+    const imagePreviewRef = useRef<HTMLDialogElement>(null);
     const [mode, setMode] = useState<"add" | "update">("add");
-    const [formData, setFormData] = useState<Partial<Product>>({ id: 0, name: "", brand: "", price: 0, stock: 0, unit: "", image_url: "" })
+    const [formData, setFormData] = useState<Partial<Product>>({ id: 0, name: "", brand: "", price: 0, stock: 0, unit: "", image_url: "", category_id: undefined })
     const [loading, setLoading] = useState<boolean>(false);
     const [products, setProducts] = useState<ProductWithUrl[]>([]);
     const [selectedProduct, setSelectedProduct] = useState<ProductWithUrl | null>(null);
     const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [previewImageUrl, setPreviewImageUrl] = useState<string>("");
 
     useEffect(() => {
         refreshProducts();
+        (async () => {
+            try {
+                const cats = await getAllCategories();
+                setCategories(cats);
+            } catch (err) {
+                console.error("Failed to load categories", err);
+            }
+        })();
     }, [])
 
     const refreshProducts = async () => {
@@ -26,10 +39,16 @@ const Products = () => {
         setLoading(false);
     }
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const openImagePreview = (url: string) => {
+        if (!url) return;
+        setPreviewImageUrl(url);
+        imagePreviewRef.current?.showModal();
+    }
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         // Convert number fields appropriately
-        const numericFields = ["price", "stock", "id"] as const;
+        const numericFields = ["price", "stock", "id", "category_id"] as const;
         if (numericFields.includes(name as any)) {
             setFormData({ ...formData, [name]: Number(value) });
         } else {
@@ -63,6 +82,7 @@ const Products = () => {
                     stock: formData.stock ?? 0,
                     unit: formData.unit ?? "",
                     image_url: imagePath,
+                    category_id: formData.category_id ?? null,
                     created_at: new Date().toISOString(),
                 } as Omit<ProductWithUrl, "id" | "publicUrl">;
                 const added = await addProduct(payload);
@@ -81,6 +101,7 @@ const Products = () => {
                     stock: formData.stock,
                     unit: formData.unit,
                     image_url: imagePath,
+                    category_id: formData.category_id,
                 };
                 const updated = await updateProduct(selectedProduct.id, updates);
                 if (updated) {
@@ -109,11 +130,12 @@ const Products = () => {
                 stock: data.stock,
                 unit: data.unit,
                 image_url: data.image_url,
+                category_id: data.category_id,
             });
             setSelectedFile(null);
         } else {
             setSelectedProduct(null);
-            setFormData({ id: 0, name: "", brand: "", price: 0, stock: 0, unit: "", image_url: "" });
+            setFormData({ id: 0, name: "", brand: "", price: 0, stock: 0, unit: "", image_url: "", category_id: undefined });
             setSelectedFile(null);
         }
 
@@ -128,9 +150,17 @@ const Products = () => {
 
     const confirmDelete = async () => {
         if (!selectedProduct) return;
+
         try {
             setDeleteLoading(true);
-            await deleteProduct(selectedProduct.id, selectedProduct.image_url);
+            const ok = await deleteProduct(selectedProduct.id, selectedProduct.image_url);
+
+            console.log(ok);
+
+            if (!ok) {
+                alert("Failed to delete product. Please try again.");
+                return;
+            }
             await refreshProducts();
             deleteModalRef.current?.close();
         } finally {
@@ -139,13 +169,13 @@ const Products = () => {
     }
     return (
         <>
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
                 <div>
                     <h1 className="text-2xl font-bold">Products</h1>
                     <span className="text-gray-500">Overview of all products.</span>
                 </div>
 
-                <button className="btn bg-emerald-500" onClick={() => openModal("add")}>
+                <button className="btn bg-emerald-500 w-full sm:w-auto" onClick={() => openModal("add")}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
@@ -154,7 +184,7 @@ const Products = () => {
             </div>
             <dialog ref={modalRef} className="modal">
                 <div className="modal-box">
-                    <h3 className="font-bold text-lg mb-2">{mode == "add" ? "Add Product" : "Update Stock"}</h3>
+                    <h3 className="font-bold text-lg mb-2">{mode == "add" ? "Add Product" : "Update Product"}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
                             <label className="label">Name</label>
@@ -177,6 +207,15 @@ const Products = () => {
                             <input type="text" name="unit" className="input input-bordered w-full" value={formData.unit ?? ""} onChange={handleInputChange} disabled={loading} />
                         </div>
                         <div>
+                            <label className="label">Category</label>
+                            <select name="category_id" className="select select-bordered w-full" value={formData.category_id ?? ""} onChange={handleInputChange} disabled={loading}>
+                                <option value="" disabled>Select a category</option>
+                                {categories.map(cat => (
+                                    <option key={cat.id} value={cat.id}>{cat.name} ({cat.species})</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div>
                             <label className="label">Image</label>
                             <input type="file" accept="image/*" className="file-input file-input-bordered w-full" onChange={(e) => setSelectedFile(e.target.files?.[0] ?? null)} disabled={loading} />
                             <p className="text-xs text-gray-500 mt-1">Optional. If provided, will upload to storage.</p>
@@ -196,38 +235,40 @@ const Products = () => {
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>Product ID</th>
+                            <th className="hidden md:table-cell">Product ID</th>
                             <th>Product Name</th>
-                            <th>Brand</th>
+                            <th className="hidden sm:table-cell">Brand</th>
                             <th>Price</th>
-                            <th>Unit</th>
-                            <th>Stock</th>
-                            <th>Date Added</th>
+                            <th className="hidden lg:table-cell">Unit</th>
+                            <th className="hidden sm:table-cell">Stock</th>
+                            <th className="hidden xl:table-cell">Date Added</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {products?.map(product => (
                             <tr key={product.id}>
-                                <th>{product.id}</th>
+                                <th className="hidden md:table-cell">{product.id}</th>
                                 <td className="flex items-center gap-2">
                                     {product.publicUrl ? (
-                                        <img src={product.publicUrl} alt={product.name} className="w-8 h-8 object-cover rounded" />
+                                        <button type="button" onClick={() => openImagePreview(product.publicUrl)} title="Preview image">
+                                            <img src={product.publicUrl} alt={product.name} className="w-8 h-8 object-cover rounded hover:opacity-80 cursor-pointer" />
+                                        </button>
                                     ) : null}
                                     {product.name}
                                 </td>
-                                <td>{product.brand}</td>
+                                <td className="hidden sm:table-cell">{product.brand}</td>
                                 <td>{product.price}</td>
-                                <td>{product.unit}</td>
-                                <td>{product.stock}</td>
-                                <td>{new Date(product.created_at).toLocaleDateString("en-PH")}</td>
+                                <td className="hidden lg:table-cell">{product.unit}</td>
+                                <td className="hidden sm:table-cell">{product.stock}</td>
+                                <td className="hidden xl:table-cell">{new Date(product.created_at).toLocaleDateString("en-PH")}</td>
                                 <td>
                                     <div className="inline-flex gap-1 font-medium">
-                                        <button onClick={() => openModal("update", product)} className="btn btn-info rounded-sm px-4 py-2 cursor-pointer">
-                                            <Box className="size-5" />
+                                        <button onClick={() => openModal("update", product)} className="btn btn-info rounded-sm px-2 sm:px-4 py-2 cursor-pointer">
+                                            <Edit className="size-5" />
                                         </button>
-                                        <button onClick={() => openDeleteModal(product)} className="btn btn-error rounded-sm px-4 py-2 cursor-pointer">
-                                            <RefreshCcw className="size-5" />
+                                        <button onClick={() => openDeleteModal(product)} className="btn btn-error rounded-sm px-2 sm:px-4 py-2 cursor-pointer" title="Delete product">
+                                            <Trash2 className="size-5" />
                                         </button>
                                     </div>
                                 </td>
@@ -241,8 +282,25 @@ const Products = () => {
                     <h3 className="font-bold text-lg">Delete Product</h3>
                     <p className="py-3">Are you sure you want to delete <span className="font-semibold">{selectedProduct?.name}</span>?</p>
                     <div className="modal-action">
-                        <button className="btn" onClick={() => deleteModalRef.current?.close()}>Cancel</button>
-                        <button className="btn btn-error" onClick={confirmDelete} disabled={deleteLoading}>Delete</button>
+                        <button className="btn" onClick={() => deleteModalRef.current?.close()} disabled={deleteLoading}>Cancel</button>
+                        <button className="btn btn-error" onClick={confirmDelete} disabled={deleteLoading}>
+                            {deleteLoading ? "Deleting..." : "Delete"}
+                        </button>
+                    </div>
+                </div>
+            </dialog>
+            <dialog ref={imagePreviewRef} className="modal">
+                <div className="modal-box max-w-3xl">
+                    <h3 className="font-bold text-lg mb-3">Product Image</h3>
+                    <div className="flex items-center justify-center">
+                        {previewImageUrl ? (
+                            <img src={previewImageUrl} alt="Product preview" className="max-h-[70vh] object-contain" />
+                        ) : (
+                            <p className="text-sm text-gray-500">No image available.</p>
+                        )}
+                    </div>
+                    <div className="modal-action">
+                        <button className="btn" onClick={() => imagePreviewRef.current?.close()}>Close</button>
                     </div>
                 </div>
             </dialog>

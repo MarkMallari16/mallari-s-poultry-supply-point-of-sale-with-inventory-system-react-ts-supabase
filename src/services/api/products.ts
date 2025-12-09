@@ -85,13 +85,21 @@ export const getTotalProducts = async (): Promise<number> => {
 
 export const deleteProduct = async (id: number, imagePath?: string): Promise<boolean> => {
     try {
-        // Delete image from storage (optional)
+        // Delete image from storage (optional; ignore failures)
         if (imagePath) {
-            await supabase.storage.from("product-images").remove([imagePath]);
+            const { error: storageError } = await supabase.storage
+                .from("product-images")
+                .remove([imagePath]);
+            if (storageError) {
+                console.warn("Failed to remove product image from storage:", storageError.message);
+            }
         }
 
         // Delete product from table
-        const { error } = await supabase.from("products").delete().eq("id", id);
+        const { error } = await supabase
+            .from("products")
+            .delete()
+            .eq("id", id);
 
         if (error) {
             console.error("Error deleting product:", error.message);

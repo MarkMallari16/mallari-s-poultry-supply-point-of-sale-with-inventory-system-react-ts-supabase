@@ -1,5 +1,5 @@
 import { Banknote, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import type { ProductWithUrl } from "../../types/product"
 import type { Category } from "../../types/categories";
 import { getAllProducts } from "../../services/api/products";
@@ -8,9 +8,9 @@ import ProductCard from "../../components/POS/ProductCard";
 import { useCartStore } from "../../stores/useCartStore";
 
 const POS = () => {
-
     const [products, setProducts] = useState<ProductWithUrl[]>();
     const [categories, setCategories] = useState<Category[]>();
+    const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
 
     const fetchProducts = async () => {
         const results = await getAllProducts();
@@ -34,33 +34,55 @@ const POS = () => {
     const totalItems = useCartStore((s) => s.totalItems);
     const totalAmount = useCartStore((s) => s.totalAmount);
 
-    const handleCheckout = async () => {
-        // Placeholder: integrate with orders table later
-        // For now, just clear cart after 'checkout'
-        alert(`Checked out ${totalItems()} item(s) totaling ₱${totalAmount().toFixed(2)}`);
-        clearCart();
+    const checkoutModalRef = useRef<HTMLDialogElement>(null);
+
+    const openCheckout = () => {
+        if (cart.length === 0) return;
+        checkoutModalRef.current?.showModal();
     }
+
+    const confirmCheckout = async () => {
+        // TODO: integrate orders and stock deduction
+        clearCart();
+        checkoutModalRef.current?.close();
+    }
+
+    // Compute filtered products by category.
+    const filteredProducts = (() => {
+        if (!products) return [] as ProductWithUrl[];
+        if (!selectedCategoryId) return products;
+        const cat = categories?.find(c => c.id === selectedCategoryId);
+        // Prefer category_id if present on product; fallback to brand === category name
+        return products.filter((p: any) =>
+            (typeof p.category_id === 'number' && p.category_id === selectedCategoryId) ||
+            (cat && p.brand === cat.name)
+        );
+    })();
 
     return (
         <>
             <div>
                 <h1 className="text-xl font-bold">Category</h1>
                 <div className="mt-2 flex gap-2">
-                    {
-                        categories?.map(category => (
-                            <button key={category.id} className="btn">{category.name}</button>
-                        ))
-                    }
+                    <button
+                        className={`btn ${selectedCategoryId === null ? 'btn-primary' : ''}`}
+                        onClick={() => setSelectedCategoryId(null)}
+                    >All</button>
+                    {categories?.map(category => (
+                        <button
+                            key={category.id}
+                            className={`btn ${selectedCategoryId === category.id ? 'btn-primary' : ''}`}
+                            onClick={() => setSelectedCategoryId(category.id)}
+                        >{category.name}</button>
+                    ))}
                 </div>
             </div>
             <div className="mt-4 grid grid-cols-1 lg:grid-cols-[1fr_30%] gap-6">
                 <div>
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-                        {
-                            products?.map(product => (
-                                <ProductCard key={product.id} product={product} />
-                            ))
-                        }
+                        {filteredProducts.map(product => (
+                            <ProductCard key={product.id} product={product} />
+                        ))}
                     </div>
                 </div>
                 <div>
@@ -115,7 +137,7 @@ const POS = () => {
                             <h1 className="text-2xl font-bold text-emerald-500">₱{totalAmount().toFixed(2)}</h1>
                         </div>
                         <div>
-                            <button className="btn btn-success font-bold w-full mt-4" onClick={handleCheckout} disabled={cart.length === 0}>
+                            <button className="btn btn-success font-bold w-full mt-4" onClick={openCheckout} disabled={cart.length === 0}>
                                 <Banknote />
                                 CHECKOUT
                             </button>
@@ -123,6 +145,55 @@ const POS = () => {
                     </div>
                 </div>
             </div>
+            <dialog ref={checkoutModalRef} className="modal">
+                <div className="modal-box max-w-3xl">
+                    <h3 className="font-bold text-lg">Checkout Summary</h3>
+                    <div className="mt-3 overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th className="text-right">Price</th>
+                                    <th className="text-center">Qty</th>
+                                    <th className="text-right">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {cart.map((item) => (
+                                    <tr key={item.id}>
+                                        <td className="max-w-[260px]">
+                                            <div className="flex items-center gap-3">
+                                                {item.publicUrl && (
+                                                    <img src={item.publicUrl} alt={item.name} className="w-10 h-10 rounded object-cover" />
+                                                )}
+                                                <div>
+                                                    <div className="font-medium">{item.name}</div>
+                                                    <div className="text-xs text-gray-500">{item.unit}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="text-right">₱{item.price.toFixed(2)}</td>
+                                        <td className="text-center">{item.quantity}</td>
+                                        <td className="text-right font-medium">₱{(item.price * item.quantity).toFixed(2)}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td className="text-right font-semibold">Total</td>
+                                    <td className="text-right font-bold text-emerald-600">₱{totalAmount().toFixed(2)}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div className="modal-action">
+                        <button className="btn" onClick={() => checkoutModalRef.current?.close()}>Cancel</button>
+                        <button className="btn btn-success" onClick={confirmCheckout} disabled={cart.length === 0}>Confirm & Pay</button>
+                    </div>
+                </div>
+            </dialog>
         </>
     )
 }

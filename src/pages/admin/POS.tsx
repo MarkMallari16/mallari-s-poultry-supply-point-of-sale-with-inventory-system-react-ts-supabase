@@ -65,13 +65,13 @@ const POS = () => {
                 <h1 className="text-xl font-bold">Category</h1>
                 <div className="mt-2 flex gap-2">
                     <button
-                        className={`btn ${selectedCategoryId === null ? 'btn-primary' : ''}`}
+                        className={`btn ${selectedCategoryId === null ? 'btn bg-success' : ''}`}
                         onClick={() => setSelectedCategoryId(null)}
                     >All</button>
                     {categories?.map(category => (
                         <button
                             key={category.id}
-                            className={`btn ${selectedCategoryId === category.id ? 'btn-primary' : ''}`}
+                            className={`btn ${selectedCategoryId === category.id ? 'btn bg-success' : ''}`}
                             onClick={() => setSelectedCategoryId(category.id)}
                         >{category.name}</button>
                     ))}
@@ -97,7 +97,11 @@ const POS = () => {
 
                         <div className="pt-6 overflow-y-auto h-96">
                             {cart.length === 0 ? (
-                                <p className="text-gray-500">Cart is empty.</p>
+                                <div className="flex flex-col justify-center items-center text-gray-500">
+                                    <ShoppingCart size={50}/>
+                                    <p>Cart is empty.</p>
+
+                                </div>
                             ) : (
                                 <div className="flex flex-col gap-3">
                                     {cart.map((item) => (

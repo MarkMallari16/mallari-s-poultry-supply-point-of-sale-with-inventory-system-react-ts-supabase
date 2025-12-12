@@ -10,8 +10,16 @@ const Category = () => {
   const [mode, setMode] = useState<"add" | "update">("add");
   const [formData, setFormData] = useState<{ id?: number; name: string; species: string }>({ name: "", species: "" });
   const [selected, setSelected] = useState<CategoryType | null>(null);
+  const [filterSpecies, setFilterSpecies] = useState<string>("");
   const modalRef = useRef<HTMLDialogElement>(null);
   const deleteModalRef = useRef<HTMLDialogElement>(null);
+
+  const uniqueSpecies = Array.from(new Set(categories.map((c) => c.species).filter(Boolean)));
+
+  const filteredCategories = categories.filter((c) => {
+    if (!filterSpecies) return true;
+    return c.species === filterSpecies;
+  });
 
   const refresh = async () => {
     setLoading(true);
@@ -83,12 +91,26 @@ const Category = () => {
           <p className="text-gray-500">Manage all product categories.</p>
         </div>
 
-        <button className="btn bg-emerald-500 w-full sm:w-auto" onClick={() => openModal("add")}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
-          Add Category
-        </button>
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+          <select
+            className="select select-bordered w-full sm:w-auto"
+            value={filterSpecies}
+            onChange={(e) => setFilterSpecies(e.target.value)}
+          >
+            <option value="">All Species</option>
+            {uniqueSpecies.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+          <button className="btn bg-emerald-500 w-full sm:w-auto" onClick={() => openModal("add")}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Add Category
+          </button>
+        </div>
       </div>
       <div className="mt-4 overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
         <table className="table">
@@ -102,7 +124,7 @@ const Category = () => {
             </tr>
           </thead>
           <tbody>
-            {categories.map((c) => (
+            {filteredCategories.map((c) => (
               <tr key={c.id}>
                 <td>{c.id}</td>
                 <td>{c.name}</td>

@@ -98,7 +98,7 @@ const POS = () => {
                         <div className="pt-6 overflow-y-auto h-96">
                             {cart.length === 0 ? (
                                 <div className="flex flex-col justify-center items-center text-gray-500">
-                                    <ShoppingCart size={50}/>
+                                    <ShoppingCart size={50} />
                                     <p>Cart is empty.</p>
 
                                 </div>

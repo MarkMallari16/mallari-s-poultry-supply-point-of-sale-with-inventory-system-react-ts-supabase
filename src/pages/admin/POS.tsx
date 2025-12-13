@@ -1,16 +1,26 @@
-import { Banknote, Minus, Plus, ShoppingCart, Trash2, LayoutGrid } from "lucide-react"
+import { Banknote, Minus, Plus, ShoppingCart, Trash2, LayoutGrid, CreditCard, Wallet, CheckCircle, Printer } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import type { ProductWithUrl } from "../../types/product"
 import type { Category } from "../../types/categories";
+import type { Order } from "../../types/orders";
 import { getAllProducts } from "../../services/api/products";
 import { getAllCategories } from "../../services/api/categories";
+import { createOrder } from "../../services/api/orders";
 import ProductCard from "../../components/POS/ProductCard";
 import { useCartStore } from "../../stores/useCartStore";
+import { useAuthStore } from "../../stores/useAuthStore";
+
+type PaymentMethod = 'Cash' | 'Card' | 'E-Wallet';
 
 const POS = () => {
     const [products, setProducts] = useState<ProductWithUrl[]>();
     const [categories, setCategories] = useState<Category[]>();
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('Cash');
+    const [isProcessing, setIsProcessing] = useState(false);
+    const [completedOrder, setCompletedOrder] = useState<Order | null>(null);
+
+    const user = useAuthStore((s) => s.user);
 
     const fetchProducts = async () => {
         const results = await getAllProducts();
@@ -34,16 +44,57 @@ const POS = () => {
     const totalAmount = useCartStore((s) => s.totalAmount);
 
     const checkoutModalRef = useRef<HTMLDialogElement>(null);
+    const successModalRef = useRef<HTMLDialogElement>(null);
 
     const openCheckout = () => {
         if (cart.length === 0) return;
+        setPaymentMethod('Cash');
         checkoutModalRef.current?.showModal();
     }
 
     const confirmCheckout = async () => {
-        // TODO: integrate orders and stock deduction
-        clearCart();
-        checkoutModalRef.current?.close();
+        if (cart.length === 0 || !user) return;
+
+        setIsProcessing(true);
+
+        try {
+            const orderInput = {
+                total_amount: totalAmount(),
+                payment_method: paymentMethod,
+                cashier_id: user.id,
+                cashier_name: user.full_name || user.email,
+                items: cart.map(item => ({
+                    product_id: item.id,
+                    product_name: item.name,
+                    quantity: item.quantity,
+                    unit_price: item.price,
+                    subtotal: item.price * item.quantity
+                }))
+            };
+
+            const order = await createOrder(orderInput);
+
+            if (order) {
+                setCompletedOrder(order);
+                clearCart();
+                checkoutModalRef.current?.close();
+                successModalRef.current?.showModal();
+                // Refresh products to get updated stock
+                fetchProducts();
+            } else {
+                alert('Failed to process order. Please try again.');
+            }
+        } catch (error) {
+            console.error('Checkout error:', error);
+            alert('An error occurred during checkout.');
+        } finally {
+            setIsProcessing(false);
+        }
+    }
+
+    const closeSuccessModal = () => {
+        setCompletedOrder(null);
+        successModalRef.current?.close();
     }
 
     // Compute filtered products by category.
@@ -57,6 +108,12 @@ const POS = () => {
             (cat && p.brand === cat.name)
         );
     })();
+
+    const paymentMethods: { id: PaymentMethod; label: string; icon: React.ReactNode }[] = [
+        { id: 'Cash', label: 'Cash', icon: <Banknote size={20} /> },
+        { id: 'Card', label: 'Card', icon: <CreditCard size={20} /> },
+        { id: 'E-Wallet', label: 'E-Wallet', icon: <Wallet size={20} /> },
+    ];
 
     return (
         <div className="h-[calc(100vh-6rem)] flex flex-col lg:flex-row gap-6">
@@ -107,11 +164,11 @@ const POS = () => {
                         </div>
                         <div>
                             <h2 className="font-bold text-lg text-gray-800">Current Order</h2>
-                            <p className="text-xs text-gray-500 font-medium">Transaction ID: #0000</p>
+                            <p className="text-xs text-gray-500 font-medium">New Transaction</p>
                         </div>
                     </div>
-                    <button 
-                        className="btn btn-ghost btn-sm text-red-500 hover:bg-red-50 px-2" 
+                    <button
+                        className="btn btn-ghost btn-sm text-red-500 hover:bg-red-50 px-2"
                         onClick={clearCart}
                         disabled={cart.length === 0}
                     >
@@ -147,17 +204,17 @@ const POS = () => {
                                         <p className="font-bold text-emerald-600 text-sm">₱{(item.price * item.quantity).toFixed(2)}</p>
                                     </div>
                                     <p className="text-xs text-gray-500">{item.unit} • ₱{item.price}</p>
-                                    
+
                                     <div className="flex items-center gap-3 mt-2">
-                                        <button 
-                                            className="w-6 h-6 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition-colors" 
+                                        <button
+                                            className="w-6 h-6 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition-colors"
                                             onClick={() => decrement(item.id)}
                                         >
                                             <Minus size={12} />
                                         </button>
                                         <span className="text-sm font-bold w-4 text-center">{item.quantity}</span>
-                                        <button 
-                                            className="w-6 h-6 rounded-full bg-emerald-100 hover:bg-emerald-200 flex items-center justify-center text-emerald-700 transition-colors" 
+                                        <button
+                                            className="w-6 h-6 rounded-full bg-emerald-100 hover:bg-emerald-200 flex items-center justify-center text-emerald-700 transition-colors"
                                             onClick={() => increment(item.id)}
                                         >
                                             <Plus size={12} />
@@ -185,10 +242,10 @@ const POS = () => {
                             <span className="font-bold text-2xl text-emerald-600">₱{totalAmount().toFixed(2)}</span>
                         </div>
                     </div>
-                    
-                    <button 
-                        className="btn btn-success w-full text-white font-bold text-lg h-12 shadow-emerald-200 shadow-lg hover:shadow-emerald-300 transition-all disabled:bg-gray-200 disabled:text-gray-400 disabled:shadow-none disabled:border-none" 
-                        onClick={openCheckout} 
+
+                    <button
+                        className="btn btn-success w-full text-white font-bold text-lg h-12 shadow-emerald-200 shadow-lg hover:shadow-emerald-300 transition-all disabled:bg-gray-200 disabled:text-gray-400 disabled:shadow-none disabled:border-none"
+                        onClick={openCheckout}
                         disabled={cart.length === 0}
                     >
                         <Banknote className="mr-2" />
@@ -204,8 +261,8 @@ const POS = () => {
                         <h3 className="font-bold text-xl text-gray-800">Order Summary</h3>
                         <button className="btn btn-sm btn-circle btn-ghost" onClick={() => checkoutModalRef.current?.close()}>✕</button>
                     </div>
-                    
-                    <div className="p-6 max-h-[60vh] overflow-y-auto">
+
+                    <div className="p-6 max-h-[40vh] overflow-y-auto">
                         <table className="table w-full">
                             <thead>
                                 <tr className="text-gray-500 border-b border-gray-100">
@@ -240,19 +297,104 @@ const POS = () => {
                         </table>
                     </div>
 
+                    {/* Payment Method Selection */}
+                    <div className="px-6 py-4 border-t border-gray-100">
+                        <h4 className="font-semibold text-gray-700 mb-3">Payment Method</h4>
+                        <div className="grid grid-cols-3 gap-3">
+                            {paymentMethods.map(method => (
+                                <button
+                                    key={method.id}
+                                    className={`p-4 rounded-xl border-2 flex flex-col items-center gap-2 transition-all ${paymentMethod === method.id
+                                            ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                                            : 'border-gray-200 hover:border-gray-300 text-gray-600'
+                                        }`}
+                                    onClick={() => setPaymentMethod(method.id)}
+                                >
+                                    {method.icon}
+                                    <span className="font-medium text-sm">{method.label}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
                     <div className="p-6 bg-gray-50 border-t border-gray-100">
                         <div className="flex justify-between items-center mb-6">
                             <span className="text-gray-500 font-medium">Total Amount</span>
                             <span className="text-3xl font-bold text-emerald-600">₱{totalAmount().toFixed(2)}</span>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
-                            <button className="btn btn-outline border-gray-300 text-gray-600 hover:bg-gray-100 hover:text-gray-800 hover:border-gray-400" onClick={() => checkoutModalRef.current?.close()}>Cancel</button>
-                            <button className="btn btn-success text-white shadow-lg shadow-emerald-200" onClick={confirmCheckout} disabled={cart.length === 0}>Confirm Payment</button>
+                            <button
+                                className="btn btn-outline border-gray-300 text-gray-600 hover:bg-gray-100 hover:text-gray-800 hover:border-gray-400"
+                                onClick={() => checkoutModalRef.current?.close()}
+                                disabled={isProcessing}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="btn btn-success text-white shadow-lg shadow-emerald-200"
+                                onClick={confirmCheckout}
+                                disabled={cart.length === 0 || isProcessing}
+                            >
+                                {isProcessing ? (
+                                    <span className="loading loading-spinner loading-sm"></span>
+                                ) : (
+                                    'Confirm Payment'
+                                )}
+                            </button>
                         </div>
                     </div>
                 </div>
                 <form method="dialog" className="modal-backdrop">
                     <button>close</button>
+                </form>
+            </dialog>
+
+            {/* Success Modal */}
+            <dialog ref={successModalRef} className="modal backdrop-blur-sm">
+                <div className="modal-box max-w-md p-0 overflow-hidden rounded-2xl text-center">
+                    <div className="p-8 bg-gradient-to-b from-emerald-50 to-white">
+                        <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <CheckCircle size={48} className="text-emerald-600" />
+                        </div>
+                        <h3 className="font-bold text-2xl text-gray-800 mb-2">Payment Successful!</h3>
+                        <p className="text-gray-500">Your transaction has been completed</p>
+                    </div>
+
+                    {completedOrder && (
+                        <div className="p-6 space-y-4">
+                            <div className="bg-gray-50 rounded-xl p-4 space-y-3">
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-gray-500">Transaction ID</span>
+                                    <span className="font-bold text-gray-800">{completedOrder.transaction_id}</span>
+                                </div>
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-gray-500">Payment Method</span>
+                                    <span className="font-medium text-gray-700">{completedOrder.payment_method}</span>
+                                </div>
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-gray-500">Items</span>
+                                    <span className="font-medium text-gray-700">{completedOrder.items?.length || 0} items</span>
+                                </div>
+                                <div className="flex justify-between pt-3 border-t border-gray-200">
+                                    <span className="font-semibold text-gray-700">Total Paid</span>
+                                    <span className="font-bold text-xl text-emerald-600">₱{completedOrder.total_amount.toFixed(2)}</span>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                                <button className="btn btn-outline border-gray-300" onClick={closeSuccessModal}>
+                                    <Printer size={16} className="mr-2" />
+                                    Print Receipt
+                                </button>
+                                <button className="btn btn-success text-white" onClick={closeSuccessModal}>
+                                    New Order
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+                <form method="dialog" className="modal-backdrop">
+                    <button onClick={closeSuccessModal}>close</button>
                 </form>
             </dialog>
         </div>

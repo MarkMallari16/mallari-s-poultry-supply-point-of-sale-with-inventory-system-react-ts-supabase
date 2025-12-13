@@ -1,66 +1,53 @@
-import { useState } from "react";
-import { Eye, Search, Download, ChevronLeft, ChevronRight, DollarSign, ShoppingBag, CreditCard } from "lucide-react";
-import type { Sale } from "../../types/sales";
-
-// Mock Data Generation
-const generateMockSales = (count: number): Sale[] => {
-  const sales: Sale[] = [];
-  const statuses: Sale['status'][] = ['Completed', 'Completed', 'Completed', 'Refunded', 'Cancelled'];
-  const methods: Sale['paymentMethod'][] = ['Cash', 'Card', 'E-Wallet'];
-
-  for (let i = 1; i <= count; i++) {
-    sales.push({
-      id: i.toString(),
-      transactionId: `TRX-${10000 + i}`,
-      date: new Date(Date.now() - Math.floor(Math.random() * 10000000000)).toISOString(),
-      totalAmount: Math.floor(Math.random() * 5000) + 100,
-      paymentMethod: methods[Math.floor(Math.random() * methods.length)],
-      status: statuses[Math.floor(Math.random() * statuses.length)],
-      cashierName: `Cashier ${Math.floor(Math.random() * 5) + 1}`,
-      items: [
-        { productId: 1, productName: "Product A", quantity: 2, price: 150 },
-        { productId: 2, productName: "Product B", quantity: 1, price: 300 },
-      ]
-    });
-  }
-  return sales.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-};
-
-const MOCK_SALES = generateMockSales(50);
+import { useState, useEffect } from "react";
+import { Eye, Search, Download, ChevronLeft, ChevronRight, DollarSign, ShoppingBag, CreditCard, Loader2 } from "lucide-react";
+import type { Order } from "../../types/orders";
+import { getAllOrders } from "../../services/api/orders";
 
 const SalesHistory = () => {
-  const [sales] = useState<Sale[]>(MOCK_SALES);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("All");
   const [dateFilter, setDateFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedSale, setSelectedSale] = useState<Sale | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const itemsPerPage = 10;
 
+  // Fetch orders on component mount
+  useEffect(() => {
+    const fetchOrders = async () => {
+      setLoading(true);
+      const data = await getAllOrders();
+      setOrders(data);
+      setLoading(false);
+    };
+    fetchOrders();
+  }, []);
+
   // Filter Logic
-  const filteredSales = sales.filter(sale => {
-    const matchesSearch = sale.transactionId.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          sale.cashierName.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "All" || sale.status === statusFilter;
-    const matchesDate = !dateFilter || sale.date.startsWith(dateFilter);
-    
+  const filteredOrders = orders.filter(order => {
+    const matchesSearch = order.transaction_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.cashier_name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === "All" || order.status === statusFilter;
+    const matchesDate = !dateFilter || (order.created_at && order.created_at.startsWith(dateFilter));
+
     return matchesSearch && matchesStatus && matchesDate;
   });
 
   // Pagination Logic
-  const totalPages = Math.ceil(filteredSales.length / itemsPerPage);
-  const paginatedSales = filteredSales.slice(
+  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+  const paginatedOrders = filteredOrders.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
   // Stats Calculation
-  const totalRevenue = filteredSales.reduce((sum, sale) => sale.status === 'Completed' ? sum + sale.totalAmount : sum, 0);
-  const totalTransactions = filteredSales.length;
+  const totalRevenue = filteredOrders.reduce((sum, order) => order.status === 'Completed' ? sum + order.total_amount : sum, 0);
+  const totalTransactions = filteredOrders.length;
   const averageOrderValue = totalTransactions > 0 ? totalRevenue / totalTransactions : 0;
 
-  const handleViewDetails = (sale: Sale) => {
-    setSelectedSale(sale);
+  const handleViewDetails = (order: Order) => {
+    setSelectedOrder(order);
     (document.getElementById('sale_details_modal') as HTMLDialogElement)?.showModal();
   };
 
@@ -85,10 +72,10 @@ const SalesHistory = () => {
             <DollarSign size={32} />
           </div>
           <div className="stat-title">Total Revenue</div>
-          <div className="stat-value text-primary">${totalRevenue.toLocaleString()}</div>
+          <div className="stat-value text-primary">₱{totalRevenue.toLocaleString()}</div>
           <div className="stat-desc">Based on current filters</div>
         </div>
-        
+
         <div className="stat bg-base-200 rounded-box shadow-sm">
           <div className="stat-figure text-secondary">
             <ShoppingBag size={32} />
@@ -103,7 +90,7 @@ const SalesHistory = () => {
             <CreditCard size={32} />
           </div>
           <div className="stat-title">Avg. Order Value</div>
-          <div className="stat-value text-accent">${averageOrderValue.toFixed(2)}</div>
+          <div className="stat-value text-accent">₱{averageOrderValue.toFixed(2)}</div>
           <div className="stat-desc">Revenue / Transactions</div>
         </div>
       </div>
@@ -113,17 +100,17 @@ const SalesHistory = () => {
         <div className="form-control flex-1">
           <div className="input-group flex items-center bg-base-100 rounded-lg px-3 border border-base-300">
             <Search size={20} className="text-gray-400" />
-            <input 
-              type="text" 
-              placeholder="Search Transaction ID or Cashier..." 
+            <input
+              type="text"
+              placeholder="Search Transaction ID or Cashier..."
               className="input input-ghost w-full focus:outline-none"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
-        
-        <select 
+
+        <select
           className="select select-bordered w-full md:w-48"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
@@ -134,8 +121,8 @@ const SalesHistory = () => {
           <option value="Cancelled">Cancelled</option>
         </select>
 
-        <input 
-          type="date" 
+        <input
+          type="date"
           className="input input-bordered w-full md:w-auto"
           value={dateFilter}
           onChange={(e) => setDateFilter(e.target.value)}
@@ -157,35 +144,41 @@ const SalesHistory = () => {
             </tr>
           </thead>
           <tbody>
-            {paginatedSales.length > 0 ? (
-              paginatedSales.map((sale) => (
-                <tr key={sale.id} className="hover:bg-base-300">
-                  <td className="font-mono font-bold">{sale.transactionId}</td>
+            {loading ? (
+              <tr>
+                <td colSpan={7} className="text-center py-8">
+                  <Loader2 className="animate-spin inline-block" size={24} />
+                  <span className="ml-2">Loading orders...</span>
+                </td>
+              </tr>
+            ) : paginatedOrders.length > 0 ? (
+              paginatedOrders.map((order) => (
+                <tr key={order.id} className="hover:bg-base-300">
+                  <td className="font-mono font-bold">{order.transaction_id}</td>
                   <td>
                     <div className="flex flex-col">
-                      <span className="font-bold">{new Date(sale.date).toLocaleDateString()}</span>
-                      <span className="text-xs text-gray-500">{new Date(sale.date).toLocaleTimeString()}</span>
+                      <span className="font-bold">{order.created_at ? new Date(order.created_at).toLocaleDateString() : '-'}</span>
+                      <span className="text-xs text-gray-500">{order.created_at ? new Date(order.created_at).toLocaleTimeString() : '-'}</span>
                     </div>
                   </td>
-                  <td>{sale.cashierName}</td>
+                  <td>{order.cashier_name}</td>
                   <td>
                     <div className="badge badge-ghost gap-2">
-                      {sale.paymentMethod}
+                      {order.payment_method}
                     </div>
                   </td>
-                  <td className="font-bold">${sale.totalAmount.toFixed(2)}</td>
+                  <td className="font-bold">₱{order.total_amount.toFixed(2)}</td>
                   <td>
-                    <div className={`badge ${
-                      sale.status === 'Completed' ? 'badge-success' : 
-                      sale.status === 'Refunded' ? 'badge-warning' : 'badge-error'
-                    } gap-2`}>
-                      {sale.status}
+                    <div className={`badge ${order.status === 'Completed' ? 'badge-success' :
+                      order.status === 'Refunded' ? 'badge-warning' : 'badge-error'
+                      } gap-2`}>
+                      {order.status}
                     </div>
                   </td>
                   <td>
-                    <button 
+                    <button
                       className="btn btn-ghost btn-sm btn-square"
-                      onClick={() => handleViewDetails(sale)}
+                      onClick={() => handleViewDetails(order)}
                     >
                       <Eye size={18} />
                     </button>
@@ -195,7 +188,7 @@ const SalesHistory = () => {
             ) : (
               <tr>
                 <td colSpan={7} className="text-center py-8 text-gray-500">
-                  No sales records found matching your filters.
+                  No orders found matching your filters.
                 </td>
               </tr>
             )}
@@ -206,10 +199,10 @@ const SalesHistory = () => {
       {/* Pagination */}
       <div className="flex justify-between items-center bg-base-200 p-4 rounded-box">
         <span className="text-sm text-gray-500">
-          Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, filteredSales.length)} of {filteredSales.length} entries
+          Showing {filteredOrders.length > 0 ? ((currentPage - 1) * itemsPerPage) + 1 : 0} to {Math.min(currentPage * itemsPerPage, filteredOrders.length)} of {filteredOrders.length} entries
         </span>
         <div className="join">
-          <button 
+          <button
             className="join-item btn btn-sm"
             disabled={currentPage === 1}
             onClick={() => setCurrentPage(p => p - 1)}
@@ -217,7 +210,7 @@ const SalesHistory = () => {
             <ChevronLeft size={16} />
           </button>
           <button className="join-item btn btn-sm">Page {currentPage}</button>
-          <button 
+          <button
             className="join-item btn btn-sm"
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage(p => p + 1)}
@@ -231,28 +224,27 @@ const SalesHistory = () => {
       <dialog id="sale_details_modal" className="modal">
         <div className="modal-box w-11/12 max-w-3xl">
           <h3 className="font-bold text-lg mb-4">Transaction Details</h3>
-          {selectedSale && (
+          {selectedOrder && (
             <div className="space-y-4">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-base-200 rounded-lg">
                 <div>
                   <p className="text-xs text-gray-500">Transaction ID</p>
-                  <p className="font-bold">{selectedSale.transactionId}</p>
+                  <p className="font-bold">{selectedOrder.transaction_id}</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-500">Date</p>
-                  <p className="font-bold">{new Date(selectedSale.date).toLocaleDateString()}</p>
+                  <p className="font-bold">{selectedOrder.created_at ? new Date(selectedOrder.created_at).toLocaleDateString() : '-'}</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-500">Cashier</p>
-                  <p className="font-bold">{selectedSale.cashierName}</p>
+                  <p className="font-bold">{selectedOrder.cashier_name}</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-500">Status</p>
-                  <span className={`badge ${
-                      selectedSale.status === 'Completed' ? 'badge-success' : 
-                      selectedSale.status === 'Refunded' ? 'badge-warning' : 'badge-error'
+                  <span className={`badge ${selectedOrder.status === 'Completed' ? 'badge-success' :
+                    selectedOrder.status === 'Refunded' ? 'badge-warning' : 'badge-error'
                     }`}>
-                    {selectedSale.status}
+                    {selectedOrder.status}
                   </span>
                 </div>
               </div>
@@ -268,19 +260,19 @@ const SalesHistory = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {selectedSale.items.map((item, idx) => (
+                    {selectedOrder.items?.map((item, idx) => (
                       <tr key={idx}>
-                        <td>{item.productName}</td>
-                        <td className="text-right">${item.price.toFixed(2)}</td>
+                        <td>{item.product_name}</td>
+                        <td className="text-right">₱{item.unit_price.toFixed(2)}</td>
                         <td className="text-center">{item.quantity}</td>
-                        <td className="text-right">${(item.price * item.quantity).toFixed(2)}</td>
+                        <td className="text-right">₱{item.subtotal.toFixed(2)}</td>
                       </tr>
                     ))}
                   </tbody>
                   <tfoot>
                     <tr>
                       <td colSpan={3} className="text-right font-bold">Total Amount:</td>
-                      <td className="text-right font-bold text-lg">${selectedSale.totalAmount.toFixed(2)}</td>
+                      <td className="text-right font-bold text-lg">₱{selectedOrder.total_amount.toFixed(2)}</td>
                     </tr>
                   </tfoot>
                 </table>

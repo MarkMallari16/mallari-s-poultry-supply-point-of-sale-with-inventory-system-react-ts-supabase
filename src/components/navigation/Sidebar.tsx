@@ -1,4 +1,4 @@
-import { Box, ChartColumn, House, LogOut, Receipt, ShoppingCart, Tags, User, Warehouse, Truck, Settings, Shield, CircleHelp } from "lucide-react";
+import { Box, ChartColumn, House, LogOut, Receipt, ShoppingCart, Tags, User, Warehouse, Truck, Settings, CircleHelp } from "lucide-react";
 import { NavLink } from "react-router";
 import { useAuthStore } from "../../stores/useAuthStore";
 import { useSidebarStore } from "../../stores/useSidebarStore";
@@ -7,8 +7,6 @@ interface RoleProps {
   role: string;
 }
 const Sidebar = ({ role }: RoleProps) => {
-  const user = useAuthStore((state) => state.user);
-  const userRole = user?.role;
   const logout = useAuthStore((state) => state.logout);
   const isSidebarOpen = useSidebarStore((state) => state.isSidebarOpen);
 
@@ -93,10 +91,6 @@ const Sidebar = ({ role }: RoleProps) => {
                 <p className={sidebarTextClass}>Settings</p>
               </button>
               <button className={`${navClass({ isActive: false })} w-full text-left`}>
-                <Shield className={iconClass} />
-                <p className={sidebarTextClass}>Security</p>
-              </button>
-              <button className={`${navClass({ isActive: false })} w-full text-left`}>
                 <CircleHelp className={iconClass} />
                 <p className={sidebarTextClass}>Help Center</p>
               </button>
@@ -127,7 +121,7 @@ const Sidebar = ({ role }: RoleProps) => {
 
         {/* Logout Section */}
         <div className="px-3 mt-auto">
-          <button onClick={logout} className="flex items-center gap-3 w-full p-3 rounded-xl text-gray-500 hover:bg-red-50 hover:text-red-500 transition-all duration-200 group">
+          <button onClick={logout} className="cursor-pointer flex items-center gap-3 w-full p-3 rounded-xl text-gray-500 hover:bg-red-50 hover:text-red-500 transition-all duration-200 group">
             <LogOut className={`${iconClass} group-hover:text-red-500`} />
             <span className={`${sidebarTextClass} font-medium`}>Logout</span>
           </button>

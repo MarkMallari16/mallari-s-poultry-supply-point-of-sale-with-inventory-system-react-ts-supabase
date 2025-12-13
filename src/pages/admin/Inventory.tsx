@@ -1,4 +1,4 @@
-import { Box, Plus, RefreshCcw } from "lucide-react"
+import { Box, RefreshCcw } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { getAllProducts, resetAllStocks, updateStocks } from "../../services/api/products"
 import type { Product } from "../../types/product"

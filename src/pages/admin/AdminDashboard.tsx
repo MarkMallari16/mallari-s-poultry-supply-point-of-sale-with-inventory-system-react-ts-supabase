@@ -1,12 +1,69 @@
 
+import { useEffect, useState } from "react";
 import BarChart from "../../components/charts/BarChart";
 import LineChart from "../../components/charts/LineChart";
 import StatCard from "../../components/dashboard/StatCard";
 import IntegrationListV2 from "../../components/dashboard/IntegrationList";
-import { DollarSign, ShoppingCart, AlertTriangle } from "lucide-react";
+import { DollarSign, ShoppingCart, AlertTriangle, Loader2 } from "lucide-react";
+import { getAllProducts } from "../../services/api/products";
+import { getAllOrders } from "../../services/api/orders";
+import type { ProductWithUrl } from "../../types/product";
+import type { Order } from "../../types/orders";
+
+const LOW_STOCK_THRESHOLD = 10;
 
 const Dashboard = () => {
+    const [products, setProducts] = useState<ProductWithUrl[]>([]);
+    const [orders, setOrders] = useState<Order[]>([]);
+    const [loading, setLoading] = useState(true);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                const [productsData, ordersData] = await Promise.all([
+                    getAllProducts(),
+                    getAllOrders()
+                ]);
+                setProducts(productsData);
+                setOrders(ordersData);
+            } catch (error) {
+                console.error("Error fetching dashboard data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
+    // Calculate statistics
+    const totalOrders = orders.length;
+    const totalRevenue = orders.reduce((sum, order) => sum + (order.total_amount || 0), 0);
+    const lowStockProducts = products.filter(p => p.stock <= LOW_STOCK_THRESHOLD);
+    const criticalStockProducts = products.filter(p => p.stock <= 5);
+
+    // Format currency
+    const formatCurrency = (amount: number) => {
+        return new Intl.NumberFormat('en-PH', {
+            style: 'currency',
+            currency: 'PHP',
+            minimumFractionDigits: 2
+        }).format(amount);
+    };
+
+    // Format number with commas
+    const formatNumber = (num: number) => {
+        return new Intl.NumberFormat('en-PH').format(num);
+    };
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-64">
+                <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
+                <span className="ml-2 text-gray-600">Loading dashboard...</span>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">
@@ -35,24 +92,24 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <StatCard
                     title="Total Orders"
-                    value="1,245"
-                    trend="12.5%"
+                    value={formatNumber(totalOrders)}
+                    trend={`${products.length} products`}
                     trendUp={true}
                     icon={<ShoppingCart size={20} />}
                 />
                 <StatCard
                     title="Total Revenue"
-                    value="₱ 45,231.80"
-                    trend="8.4%"
+                    value={formatCurrency(totalRevenue)}
+                    trend="All time"
                     trendUp={true}
                     icon={<DollarSign size={20} />}
                 />
                 <StatCard
                     title="Low Stock Alerts"
-                    value="12"
-                    trend="3 Items"
+                    value={String(lowStockProducts.length)}
+                    trend={`${criticalStockProducts.length} Critical`}
                     trendUp={false}
-                    subtitle="Critical level"
+                    subtitle="Below threshold"
                     icon={<AlertTriangle size={20} />}
                 />
             </div>

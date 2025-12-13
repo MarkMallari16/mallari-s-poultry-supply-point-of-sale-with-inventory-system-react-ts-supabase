@@ -1,5 +1,4 @@
 
-import { ReactNode } from 'react';
 import BarChart from "../../components/charts/BarChart";
 import DoughnutChart from "../../components/charts/DoughnutChart";
 import LineChart from "../../components/charts/LineChart";
@@ -73,7 +72,7 @@ const Analytics = () => {
   )
 }
 
-const StatCard = ({ title, value, icon, trend }: { title: string, value: string, icon: ReactNode, trend: string }) => (
+const StatCard = ({ title, value, icon, trend }: { title: string, value: string, icon: React.ReactNode, trend: string }) => (
   <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 flex items-center justify-between">
     <div>
       <p className="text-gray-500 text-sm">{title}</p>

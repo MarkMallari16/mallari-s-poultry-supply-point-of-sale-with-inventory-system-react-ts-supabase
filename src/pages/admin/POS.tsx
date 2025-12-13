@@ -1,4 +1,4 @@
-import { Banknote, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react"
+import { Banknote, Minus, Plus, ShoppingCart, Trash2, LayoutGrid } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import type { ProductWithUrl } from "../../types/product"
 import type { Category } from "../../types/categories";
@@ -20,7 +20,6 @@ const POS = () => {
     const fetchCategories = async () => {
         const results = await getAllCategories();
         setCategories(results);
-        console.log(results);
     }
     useEffect(() => {
         fetchProducts();
@@ -60,145 +59,203 @@ const POS = () => {
     })();
 
     return (
-        <>
-            <div>
-                <h1 className="text-xl font-bold">Category</h1>
-                <div className="mt-2 flex gap-2">
+        <div className="h-[calc(100vh-6rem)] flex flex-col lg:flex-row gap-6">
+            {/* Left Section: Products & Categories */}
+            <div className="flex-1 flex flex-col gap-4 overflow-hidden">
+                {/* Categories Header */}
+                <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide shrink-0">
                     <button
-                        className={`btn ${selectedCategoryId === null ? 'btn bg-success' : ''}`}
+                        className={`btn btn-sm px-6 rounded-full border-0 ${selectedCategoryId === null ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
                         onClick={() => setSelectedCategoryId(null)}
-                    >All</button>
+                    >
+                        <LayoutGrid size={16} className="mr-2" />
+                        All Items
+                    </button>
                     {categories?.map(category => (
                         <button
                             key={category.id}
-                            className={`btn ${selectedCategoryId === category.id ? 'btn bg-success' : ''}`}
+                            className={`btn btn-sm px-6 rounded-full border-0 whitespace-nowrap ${selectedCategoryId === category.id ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
                             onClick={() => setSelectedCategoryId(category.id)}
-                        >{category.name}</button>
+                        >
+                            {category.name}
+                        </button>
                     ))}
                 </div>
-            </div>
-            <div className="mt-4 grid grid-cols-1 lg:grid-cols-[1fr_30%] gap-6">
-                <div>
-                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+
+                {/* Product Grid */}
+                <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 pb-4">
                         {filteredProducts.map(product => (
                             <ProductCard key={product.id} product={product} />
                         ))}
                     </div>
-                </div>
-                <div>
-                    <div className="bg-white p-5 rounded-md border border-gray-300 shadow-xs">
-                        <div className="flex justify-between items-center mb-2">
-                            <div className="flex items-center gap-2">
-                                <ShoppingCart className="text-emerald-500" />
-                                <h2 className="text-xl font-medium">Cart ({totalItems()})</h2>
-                            </div>
-                            <button className="btn cursor-pointer text-error font-medium bg-error/10 rounded-md" onClick={clearCart}><Trash2 className="size-4" /> Clear All</button>
+                    {filteredProducts.length === 0 && (
+                        <div className="flex flex-col items-center justify-center h-64 text-gray-400">
+                            <p>No products found in this category.</p>
                         </div>
-
-                        <div className="pt-6 overflow-y-auto h-96">
-                            {cart.length === 0 ? (
-                                <div className="flex flex-col justify-center items-center text-gray-500">
-                                    <ShoppingCart size={50} />
-                                    <p>Cart is empty.</p>
-
-                                </div>
-                            ) : (
-                                <div className="flex flex-col gap-3">
-                                    {cart.map((item) => (
-                                        <div key={item.id} className="bg-gray-100 p-5 rounded-sm flex w-full gap-5">
-                                            <div className="w-28 object-cover">
-                                                {item.publicUrl && (
-                                                    <img className="rounded-md" src={item.publicUrl} alt={item.name} />
-                                                )}
-                                            </div>
-                                            <div className="w-full">
-                                                <h3 className="text-lg font-bold">{item.name}</h3>
-                                                <p className="text-sm">{item.unit}</p>
-
-                                                <div className="flex justify-between gap-2 w-full">
-                                                    <p className="text-xl font-medium">₱{item.price}</p>
-                                                    <div className="flex justify-between items-center gap-5">
-                                                        <button className="btn btn-circle  cursor-pointer bg-white border border-gray-300" onClick={() => decrement(item.id)}>
-                                                            <Minus className="size-4" />
-                                                        </button>
-                                                        <p className="text-lg">{item.quantity}</p>
-                                                        <button className="btn btn-circle cursor-pointer bg-white border border-gray-300" onClick={() => increment(item.id)}>
-                                                            <Plus className="size-4" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div className="flex justify-end pt-4 ">
-                                                    <h2 className="text-end  text-emerald-500 font-bold">₱{(item.price * item.quantity).toFixed(2)}</h2>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                        <div className="flex items-center justify-between mt-4">
-                            <h3 className="font-medium text-xl">Total</h3>
-                            <h1 className="text-2xl font-bold text-emerald-500">₱{totalAmount().toFixed(2)}</h1>
-                        </div>
-                        <div>
-                            <button className="btn btn-success font-bold w-full mt-4" onClick={openCheckout} disabled={cart.length === 0}>
-                                <Banknote />
-                                CHECKOUT
-                            </button>
-                        </div>
-                    </div>
+                    )}
                 </div>
             </div>
-            <dialog ref={checkoutModalRef} className="modal">
-                <div className="modal-box max-w-3xl">
-                    <h3 className="font-bold text-lg">Checkout Summary</h3>
-                    <div className="mt-3 overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-                        <table className="table">
+
+            {/* Right Section: Cart */}
+            <div className="w-full lg:w-[400px] bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden">
+                {/* Cart Header */}
+                <div className="p-5 border-b border-gray-100 flex justify-between items-center bg-white">
+                    <div className="flex items-center gap-3">
+                        <div className="bg-emerald-50 p-2 rounded-lg text-emerald-600">
+                            <ShoppingCart size={20} />
+                        </div>
+                        <div>
+                            <h2 className="font-bold text-lg text-gray-800">Current Order</h2>
+                            <p className="text-xs text-gray-500 font-medium">Transaction ID: #0000</p>
+                        </div>
+                    </div>
+                    <button 
+                        className="btn btn-ghost btn-sm text-red-500 hover:bg-red-50 px-2" 
+                        onClick={clearCart}
+                        disabled={cart.length === 0}
+                    >
+                        <Trash2 size={16} />
+                    </button>
+                </div>
+
+                {/* Cart Items */}
+                <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50/50">
+                    {cart.length === 0 ? (
+                        <div className="flex flex-col justify-center items-center h-full text-gray-400 gap-3">
+                            <div className="bg-gray-100 p-4 rounded-full">
+                                <ShoppingCart size={32} className="opacity-50" />
+                            </div>
+                            <p className="font-medium">Cart is empty</p>
+                            <p className="text-sm text-gray-400 text-center max-w-[200px]">Select items from the menu to start a new order</p>
+                        </div>
+                    ) : (
+                        cart.map((item) => (
+                            <div key={item.id} className="bg-white p-3 rounded-xl border border-gray-100 shadow-sm flex gap-3 group hover:border-emerald-200 transition-colors">
+                                <div className="w-16 h-16 shrink-0 bg-gray-100 rounded-lg overflow-hidden">
+                                    {item.publicUrl ? (
+                                        <img className="w-full h-full object-cover" src={item.publicUrl} alt={item.name} />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center text-gray-300">
+                                            <ShoppingCart size={20} />
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="flex-1 flex flex-col justify-between py-0.5">
+                                    <div className="flex justify-between items-start">
+                                        <h3 className="font-bold text-gray-800 line-clamp-1 text-sm">{item.name}</h3>
+                                        <p className="font-bold text-emerald-600 text-sm">₱{(item.price * item.quantity).toFixed(2)}</p>
+                                    </div>
+                                    <p className="text-xs text-gray-500">{item.unit} • ₱{item.price}</p>
+                                    
+                                    <div className="flex items-center gap-3 mt-2">
+                                        <button 
+                                            className="w-6 h-6 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition-colors" 
+                                            onClick={() => decrement(item.id)}
+                                        >
+                                            <Minus size={12} />
+                                        </button>
+                                        <span className="text-sm font-bold w-4 text-center">{item.quantity}</span>
+                                        <button 
+                                            className="w-6 h-6 rounded-full bg-emerald-100 hover:bg-emerald-200 flex items-center justify-center text-emerald-700 transition-colors" 
+                                            onClick={() => increment(item.id)}
+                                        >
+                                            <Plus size={12} />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+
+                {/* Cart Footer */}
+                <div className="p-5 bg-white border-t border-gray-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
+                    <div className="space-y-2 mb-4">
+                        <div className="flex justify-between text-sm text-gray-500">
+                            <span>Items ({totalItems()})</span>
+                            <span>₱{totalAmount().toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between text-sm text-gray-500">
+                            <span>Tax (0%)</span>
+                            <span>₱0.00</span>
+                        </div>
+                        <div className="flex justify-between items-end pt-2 border-t border-dashed border-gray-200">
+                            <span className="font-bold text-gray-800 text-lg">Total</span>
+                            <span className="font-bold text-2xl text-emerald-600">₱{totalAmount().toFixed(2)}</span>
+                        </div>
+                    </div>
+                    
+                    <button 
+                        className="btn btn-success w-full text-white font-bold text-lg h-12 shadow-emerald-200 shadow-lg hover:shadow-emerald-300 transition-all disabled:bg-gray-200 disabled:text-gray-400 disabled:shadow-none disabled:border-none" 
+                        onClick={openCheckout} 
+                        disabled={cart.length === 0}
+                    >
+                        <Banknote className="mr-2" />
+                        Charge ₱{totalAmount().toFixed(2)}
+                    </button>
+                </div>
+            </div>
+
+            {/* Checkout Modal */}
+            <dialog ref={checkoutModalRef} className="modal backdrop-blur-sm">
+                <div className="modal-box max-w-2xl p-0 overflow-hidden rounded-2xl">
+                    <div className="p-6 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                        <h3 className="font-bold text-xl text-gray-800">Order Summary</h3>
+                        <button className="btn btn-sm btn-circle btn-ghost" onClick={() => checkoutModalRef.current?.close()}>✕</button>
+                    </div>
+                    
+                    <div className="p-6 max-h-[60vh] overflow-y-auto">
+                        <table className="table w-full">
                             <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th className="text-right">Price</th>
-                                    <th className="text-center">Qty</th>
-                                    <th className="text-right">Subtotal</th>
+                                <tr className="text-gray-500 border-b border-gray-100">
+                                    <th className="bg-transparent font-medium">Item</th>
+                                    <th className="bg-transparent text-right font-medium">Price</th>
+                                    <th className="bg-transparent text-center font-medium">Qty</th>
+                                    <th className="bg-transparent text-right font-medium">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {cart.map((item) => (
-                                    <tr key={item.id}>
-                                        <td className="max-w-[260px]">
+                                    <tr key={item.id} className="border-b border-gray-50 last:border-0">
+                                        <td className="py-4">
                                             <div className="flex items-center gap-3">
-                                                {item.publicUrl && (
-                                                    <img src={item.publicUrl} alt={item.name} className="w-10 h-10 rounded object-cover" />
-                                                )}
+                                                <div className="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden shrink-0">
+                                                    {item.publicUrl && (
+                                                        <img src={item.publicUrl} alt={item.name} className="w-full h-full object-cover" />
+                                                    )}
+                                                </div>
                                                 <div>
-                                                    <div className="font-medium">{item.name}</div>
+                                                    <div className="font-bold text-gray-800">{item.name}</div>
                                                     <div className="text-xs text-gray-500">{item.unit}</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="text-right">₱{item.price.toFixed(2)}</td>
-                                        <td className="text-center">{item.quantity}</td>
-                                        <td className="text-right font-medium">₱{(item.price * item.quantity).toFixed(2)}</td>
+                                        <td className="text-right text-gray-600">₱{item.price.toFixed(2)}</td>
+                                        <td className="text-center font-medium">{item.quantity}</td>
+                                        <td className="text-right font-bold text-emerald-600">₱{(item.price * item.quantity).toFixed(2)}</td>
                                     </tr>
                                 ))}
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td className="text-right font-semibold">Total</td>
-                                    <td className="text-right font-bold text-emerald-600">₱{totalAmount().toFixed(2)}</td>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
-                    <div className="modal-action">
-                        <button className="btn" onClick={() => checkoutModalRef.current?.close()}>Cancel</button>
-                        <button className="btn btn-success" onClick={confirmCheckout} disabled={cart.length === 0}>Confirm & Pay</button>
+
+                    <div className="p-6 bg-gray-50 border-t border-gray-100">
+                        <div className="flex justify-between items-center mb-6">
+                            <span className="text-gray-500 font-medium">Total Amount</span>
+                            <span className="text-3xl font-bold text-emerald-600">₱{totalAmount().toFixed(2)}</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <button className="btn btn-outline border-gray-300 text-gray-600 hover:bg-gray-100 hover:text-gray-800 hover:border-gray-400" onClick={() => checkoutModalRef.current?.close()}>Cancel</button>
+                            <button className="btn btn-success text-white shadow-lg shadow-emerald-200" onClick={confirmCheckout} disabled={cart.length === 0}>Confirm Payment</button>
+                        </div>
                     </div>
                 </div>
+                <form method="dialog" className="modal-backdrop">
+                    <button>close</button>
+                </form>
             </dialog>
-        </>
+        </div>
     )
 }
 

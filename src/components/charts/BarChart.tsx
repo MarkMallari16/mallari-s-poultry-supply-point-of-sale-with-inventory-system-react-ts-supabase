@@ -6,16 +6,63 @@ ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 const BarChart = () => {
     const options = {
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            x: {
+                grid: {
+                    display: false,
+                    drawBorder: false
+                },
+                ticks: {
+                    font: {
+                        size: 11
+                    },
+                    color: '#94a3b8'
+                },
+                border: {
+                    display: false
+                }
+            },
+            y: {
+                display: false,
+                grid: {
+                    display: false
+                },
+                border: {
+                    display: false
+                }
+            }
+        }
     }
+
     const data = {
-        labels: ['Jan', 'Feb', 'Mar'],
+        labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         datasets: [
-            { label: 'Sales', data: [120, 150, 180], backgroundColor: 'oklch(76.5% 0.177 163.223)' }
+            {
+                label: 'Subscribers',
+                data: [15, 25, 45, 80, 30, 40, 50],
+                backgroundColor: (context: any) => {
+                    const ctx = context.chart.ctx;
+                    // Check if chart is ready
+                    if (!ctx) return '#e2e8f0';
+                    // Simple logic to highlight the highest bar or specific bar as per design
+                    return context.dataIndex === 3 ? '#6366f1' : '#f1f5f9';
+                },
+                hoverBackgroundColor: '#6366f1',
+                borderRadius: 8,
+                barThickness: 24,
+                borderSkipped: false
+            }
         ]
     }
+
     return (
-        <div className="w-full">
+        <div className="w-full h-full">
             <Bar options={options} data={data} />
         </div>
     )
